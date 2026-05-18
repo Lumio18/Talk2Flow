@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Talk2Flow — BPMN Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    Talk2Flow BPMN Viewer Template
+    https://github.com/talk2flow/talk2flow
+
+    This is a self-contained HTML page that renders a BPMN 2.0 XML diagram
+    using bpmn-js (loaded from unpkg). It is the canonical "rich artifact"
+    visualization for any Talk2Flow skill that outputs BPMN.
+
+    USAGE:
+    1. Replace the contents of the <script id="bpmn-source" type="application/xml">
+       block with the BPMN 2.0 XML to render.
+    2. Optionally edit the <title> in the toolbar.
+    3. Open in any browser. No server required.
+
+    BPMN-js version is pinned for reproducibility. Update with care.
+  -->
+  <style>
+    :root {
+      --t2f-bg: #ffffff;
+      --t2f-fg: #1a1a1a;
+      --t2f-muted: #6b6b6b;
+      --t2f-border: rgba(0, 0, 0, 0.12);
+      --t2f-accent: #5147d4;
+      --t2f-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; background: var(--t2f-bg); color: var(--t2f-fg); }
+    body { display: flex; flex-direction: column; }
+    header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; border-bottom: 1px solid var(--t2f-border);
+      flex-wrap: wrap;
+    }
+    header .brand {
+      font-weight: 600; font-size: 14px; color: var(--t2f-fg);
+      letter-spacing: -0.01em;
+    }
+    header .brand span { color: var(--t2f-accent); }
+    header .title {
+      font-size: 13px; color: var(--t2f-muted); margin-right: auto;
+    }
+    header button {
+      padding: 6px 12px; font-size: 13px;
+      background: transparent; color: var(--t2f-fg);
+      border: 1px solid var(--t2f-border); border-radius: var(--t2f-radius);
+      cursor: pointer; transition: background 0.15s;
+    }
+    header button:hover { background: rgba(0, 0, 0, 0.04); }
+    header button:active { transform: scale(0.98); }
+    #canvas {
+      flex: 1; width: 100%; min-height: 0;
+      background: #fafafa;
+    }
+    footer {
+      padding: 8px 20px; font-size: 12px; color: var(--t2f-muted);
+      border-top: 1px solid var(--t2f-border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer a { color: var(--t2f-accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .status { font-style: italic; }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/diagram-js.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/bpmn-js.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.11.1/dist/assets/bpmn-font/css/bpmn.css" />
+</head>
+<body>
+  <header>
+    <span class="brand">Talk<span>2</span>Flow</span>
+    <span class="title" id="diagram-title">Process diagram</span>
+    <button id="zoom-in" title="Zoom in">+</button>
+    <button id="zoom-out" title="Zoom out">−</button>
+    <button id="zoom-fit">Fit</button>
+    <button id="download-svg">Download SVG</button>
+    <button id="download-bpmn">Download .bpmn</button>
+  </header>
+  <div id="canvas"></div>
+  <footer>
+    <span class="status" id="status">Loading…</span>
+    <a href="https://github.com/talk2flow/talk2flow" target="_blank" rel="noopener">github.com/talk2flow</a>
+  </footer>
+
+  <!-- BPMN source — REPLACE THE CONTENTS BELOW with your BPMN 2.0 XML -->
+  <script id="bpmn-source" type="application/xml">
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Placeholder" targetNamespace="http://talk2flow.dev/bpmn">
+  <bpmn2:process id="Process_Placeholder" isExecutable="false">
+    <bpmn2:startEvent id="Start" name="Start"/>
+    <bpmn2:task id="Task" name="Replace this with your process"/>
+    <bpmn2:endEvent id="End" name="End"/>
+    <bpmn2:sequenceFlow id="f1" sourceRef="Start" targetRef="Task"/>
+    <bpmn2:sequenceFlow id="f2" sourceRef="Task" targetRef="End"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="Diagram">
+    <bpmndi:BPMNPlane id="Plane" bpmnElement="Process_Placeholder">
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="120" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_di" bpmnElement="Task">
+        <dc:Bounds x="220" y="158" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="400" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="f1_di" bpmnElement="f1">
+        <di:waypoint x="156" y="198"/>
+        <di:waypoint x="220" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f2_di" bpmnElement="f2">
+        <di:waypoint x="340" y="198"/>
+        <di:waypoint x="400" y="198"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
+  </script>
+
+  <script src="https://unpkg.com/bpmn-js@17.11.1/dist/bpmn-navigated-viewer.production.min.js"></script>
+  <script>
+    (function () {
+      const status = document.getElementById('status');
+      const bpmnXML = document.getElementById('bpmn-source').textContent.trim();
+
+      if (typeof BpmnJS === 'undefined') {
+        status.textContent = 'Error: bpmn-js failed to load.';
+        return;
+      }
+
+      const viewer = new BpmnJS({ container: '#canvas' });
+
+      viewer.importXML(bpmnXML).then(({ warnings }) => {
+        const canvas = viewer.get('canvas');
+        canvas.zoom('fit-viewport', 'auto');
+        status.textContent = warnings.length
+          ? `Loaded with ${warnings.length} warning(s).`
+          : 'Loaded.';
+
+        document.getElementById('zoom-in').onclick = () => canvas.zoom(canvas.zoom() * 1.2);
+        document.getElementById('zoom-out').onclick = () => canvas.zoom(canvas.zoom() / 1.2);
+        document.getElementById('zoom-fit').onclick = () => canvas.zoom('fit-viewport', 'auto');
+
+        document.getElementById('download-svg').onclick = async () => {
+          try {
+            const { svg } = await viewer.saveSVG();
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'process.svg';
+            a.click();
+          } catch (err) {
+            status.textContent = 'SVG export failed: ' + err.message;
+          }
+        };
+
+        document.getElementById('download-bpmn').onclick = async () => {
+          try {
+            const { xml } = await viewer.saveXML({ format: true });
+            const blob = new Blob([xml], { type: 'application/xml' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'process.bpmn';
+            a.click();
+          } catch (err) {
+            status.textContent = 'BPMN export failed: ' + err.message;
+          }
+        };
+      }).catch((err) => {
+        status.textContent = 'Error rendering BPMN: ' + err.message;
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (in case demos add JS later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (in case scripts are added)
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+# Logs and temp
+*.log
+.tmp/
+tmp/
+
+# Talk2Flow specific
+demos/**/run-*/        # local run outputs
+output/                # local outputs from running skills
+
+# Claude Code local settings (not for repo)
+.claude/
