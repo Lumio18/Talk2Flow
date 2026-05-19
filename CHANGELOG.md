@@ -9,6 +9,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Added
 - **Claude Code plugin distribution** — `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` so the framework installs in one line via `/plugin marketplace add lumio18/talk2flow` + `/plugin install talk2flow@talk2flow`
+- **SessionStart hook** (`hooks/talk2flow-session.mjs` + `hooks/hooks.json`) — announces the plugin version and gives a one-line orientation when a Claude Code session begins
 - README install section restructured with four options: Claude.ai Project (consultants), Claude Code plugin (developers), manual clone, individual skills
 
 ### Changed

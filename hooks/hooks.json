@@ -1,0 +1,18 @@
+{
+  "description": "Talk2Flow SessionStart hook — announces the plugin and gives a one-line orientation when a Claude Code session begins.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/talk2flow-session.mjs"],
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
