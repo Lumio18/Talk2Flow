@@ -1,0 +1,311 @@
+{
+  "name": "La Boîte Artisanale — Prise de commande email",
+  "nodes": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567801",
+      "name": "Gmail — Nouvelles commandes",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [200, 300],
+      "parameters": {
+        "pollTimes": { "item": [{ "mode": "everyXMinutes", "value": 5 }] },
+        "filters": { "q": "subject:(commande OR commander OR order) is:unread" },
+        "options": { "dataPropertyAttachmentsPrefixName": "" }
+      },
+      "credentials": { "gmailOAuth2": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Gmail — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567802",
+      "name": "Extraire les champs commande",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300],
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst body = (item.json.snippet || item.json.textPlain || '').replace(/<[^>]*>/g, '');\nconst fromRaw = item.json.from || '';\n\nconst emailMatch = fromRaw.match(/<(.+?)>/);\nconst emailClient = emailMatch ? emailMatch[1] : fromRaw.trim();\n\nconst nomMatch = body.match(/(?:je suis|bonjour[,\\s]+(?:je suis)?|nom\\s*:?\\s*)([A-Z\\u00C0-\\u00DC][a-z\\u00E0-\\u00FC]+(?:\\s[A-Z\\u00C0-\\u00DC][a-z\\u00E0-\\u00FC]+)?)/i);\nconst produitMatch = body.match(/(?:commande[r]?|voudrais?|souhaite)\\s+(?:\\d+\\s+)?(?:pot[s]? de |bocal[s]? de |kg de |g de )?([a-zA-Z\\u00C0-\\u017E][\\w\\s\\-]{3,40}?)(?:\\s*(?:\\d|\\n|,|\\.|de|pour|à|merci))/i);\nconst qteMatch = body.match(/(\\d+)\\s*(?:unit[ée][s]?|pi[eè]ce[s]?|pot[s]?|bocal[s]?|kg|gramme[s]?|exemplaire[s]?)/);\nconst adresseMatch = body.match(/(?:adresse|livrer?\\s+[àa]|livraison\\s*:?\\s*)([\\w\\s,\\-\\u00C0-\\u017E]{10,120})/i);\n\nreturn [{\n  json: {\n    email_from: fromRaw,\n    email_client: emailClient,\n    email_subject: item.json.subject || '',\n    email_received_at: item.json.date || new Date().toISOString(),\n    email_id: item.json.id || '',\n    nom_client: nomMatch ? nomMatch[1].trim() : null,\n    produit: produitMatch ? produitMatch[1].trim() : null,\n    quantite: qteMatch ? parseInt(qteMatch[1]) : 1,\n    adresse_livraison: adresseMatch ? adresseMatch[1].trim() : null,\n    raw_body_preview: body.substring(0, 300)\n  }\n}];"
+      }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567803",
+      "name": "Adresse présente ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-address",
+              "leftValue": "={{ $json.adresse_livraison }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567804",
+      "name": "Gmail — Demande adresse",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [920, 140],
+      "parameters": {
+        "operation": "send",
+        "sendTo": "={{ $json.email_client }}",
+        "subject": "Votre commande — adresse de livraison manquante",
+        "emailType": "text",
+        "message": "=Bonjour {{ $json.nom_client || 'cher client' }},\n\nNous avons bien reçu votre commande pour {{ $json.produit || 'votre produit' }}.\n\nPourriez-vous nous communiquer votre adresse de livraison complète afin que nous puissions préparer l'expédition ?\n\nMerci d'avance,\n\nMarc\nLa Boîte Artisanale",
+        "options": {}
+      },
+      "credentials": { "gmailOAuth2": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Gmail — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567805",
+      "name": "Sheets — En attente adresse",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1160, 140],
+      "parameters": {
+        "operation": "append",
+        "documentId": { "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "__rl": true, "mode": "id" },
+        "sheetName": { "value": "Commandes", "__rl": true, "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.email_received_at }}",
+            "Numéro": "EN ATTENTE",
+            "Nom client": "={{ $json.nom_client || $json.email_client }}",
+            "Email": "={{ $json.email_client }}",
+            "Produit": "={{ $json.produit }}",
+            "Quantité": "={{ $json.quantite }}",
+            "Adresse": "",
+            "Statut": "En attente adresse",
+            "Source": "Email"
+          }
+        },
+        "options": {}
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Google Sheets — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567806",
+      "name": "Sheets — Vérifier stock",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [920, 460],
+      "parameters": {
+        "operation": "read",
+        "documentId": { "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "__rl": true, "mode": "id" },
+        "sheetName": { "value": "Stocks", "__rl": true, "mode": "name" },
+        "filters": {
+          "conditions": [
+            { "keyName": "Produit", "condition": "contains", "keyValue": "={{ $json.produit }}" }
+          ]
+        },
+        "options": {}
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Google Sheets — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567807",
+      "name": "Stock disponible ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1160, 460],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-stock",
+              "leftValue": "={{ $json['Stock_disponible'] }}",
+              "rightValue": "={{ $('Extraire les champs commande').item.json.quantite }}",
+              "operator": { "type": "number", "operation": "gte" }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567808",
+      "name": "Gmail — Alerte rupture",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [1400, 320],
+      "parameters": {
+        "operation": "send",
+        "sendTo": "marc@laboiteartisanale.fr, julien@laboiteartisanale.fr",
+        "subject": "=[ALERTE] Rupture stock — commande de {{ $('Extraire les champs commande').item.json.nom_client || $('Extraire les champs commande').item.json.email_client }}",
+        "emailType": "text",
+        "message": "=Alerte rupture de stock.\n\nClient : {{ $('Extraire les champs commande').item.json.nom_client || 'Inconnu' }} ({{ $('Extraire les champs commande').item.json.email_client }})\nProduit : {{ $('Extraire les champs commande').item.json.produit }}\nQuantité demandée : {{ $('Extraire les champs commande').item.json.quantite }}\nStock disponible : {{ $json['Stock_disponible'] || 0 }}\n\nAction requise : contacter le client pour proposer un délai ou un remboursement.\n\n— Workflow La Boîte Artisanale",
+        "options": {}
+      },
+      "credentials": { "gmailOAuth2": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Gmail — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567809",
+      "name": "Sheets — Rupture stock",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1640, 320],
+      "parameters": {
+        "operation": "append",
+        "documentId": { "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "__rl": true, "mode": "id" },
+        "sheetName": { "value": "Commandes", "__rl": true, "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $('Extraire les champs commande').item.json.email_received_at }}",
+            "Numéro": "RUPTURE",
+            "Nom client": "={{ $('Extraire les champs commande').item.json.nom_client || $('Extraire les champs commande').item.json.email_client }}",
+            "Email": "={{ $('Extraire les champs commande').item.json.email_client }}",
+            "Produit": "={{ $('Extraire les champs commande').item.json.produit }}",
+            "Quantité": "={{ $('Extraire les champs commande').item.json.quantite }}",
+            "Adresse": "={{ $('Extraire les champs commande').item.json.adresse_livraison }}",
+            "Statut": "Rupture stock",
+            "Source": "Email"
+          }
+        },
+        "options": {}
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Google Sheets — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567810",
+      "name": "Générer numéro commande",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1400, 600],
+      "parameters": {
+        "jsCode": "const orderData = $('Extraire les champs commande').item.json;\n\n// Read last order number from previous node output (Sheets last row)\nconst sheetsItems = $input.all();\nlet lastNum = 0;\nif (sheetsItems.length > 0) {\n  const rows = sheetsItems;\n  for (const row of rows) {\n    const numStr = row.json['Numéro'] || '';\n    const match = numStr.match(/ML-\\d{4}-(\\d+)/);\n    if (match) {\n      const n = parseInt(match[1]);\n      if (n > lastNum) lastNum = n;\n    }\n  }\n}\n\nconst year = new Date().getFullYear();\nconst nextNum = lastNum + 1;\nconst numeroCommande = `ML-${year}-${String(nextNum).padStart(4, '0')}`;\n\nreturn [{\n  json: {\n    ...orderData,\n    numero_commande: numeroCommande\n  }\n}];"
+      }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567811",
+      "name": "Sheets — Enregistrer commande",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1640, 600],
+      "parameters": {
+        "operation": "append",
+        "documentId": { "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "__rl": true, "mode": "id" },
+        "sheetName": { "value": "Commandes", "__rl": true, "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.email_received_at }}",
+            "Numéro": "={{ $json.numero_commande }}",
+            "Nom client": "={{ $json.nom_client || $json.email_client }}",
+            "Email": "={{ $json.email_client }}",
+            "Produit": "={{ $json.produit }}",
+            "Quantité": "={{ $json.quantite }}",
+            "Adresse": "={{ $json.adresse_livraison }}",
+            "Statut": "Confirmée",
+            "Source": "Email"
+          }
+        },
+        "options": {}
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Google Sheets — La Boîte Artisanale" } }
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567812",
+      "name": "Gmail — Confirmation commande",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [1880, 600],
+      "parameters": {
+        "operation": "send",
+        "sendTo": "={{ $json.email_client }}",
+        "subject": "=Votre commande {{ $json.numero_commande }} est confirmée — La Boîte Artisanale",
+        "emailType": "text",
+        "message": "=Bonjour {{ $json.nom_client || 'cher client' }},\n\nNous avons bien reçu votre commande et elle est enregistrée.\n\nRécapitulatif :\n- Commande n° : {{ $json.numero_commande }}\n- Produit : {{ $json.produit }}\n- Quantité : {{ $json.quantite }}\n- Adresse de livraison : {{ $json.adresse_livraison }}\n\nVous recevrez votre colis dans 3 à 5 jours ouvrés.\n\nMerci pour votre confiance !\n\nMarc\nLa Boîte Artisanale\n\n---\nCet email a été envoyé automatiquement. Pour toute question, répondez directement à ce message.",
+        "options": {}
+      },
+      "credentials": { "gmailOAuth2": { "id": "REPLACE_WITH_CREDENTIAL_ID", "name": "Gmail — La Boîte Artisanale" } }
+    }
+  ],
+
+  "connections": {
+    "Gmail — Nouvelles commandes": {
+      "main": [
+        [{ "node": "Extraire les champs commande", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extraire les champs commande": {
+      "main": [
+        [{ "node": "Adresse présente ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Adresse présente ?": {
+      "main": [
+        [{ "node": "Sheets — Vérifier stock", "type": "main", "index": 0 }],
+        [{ "node": "Gmail — Demande adresse", "type": "main", "index": 0 }]
+      ]
+    },
+    "Gmail — Demande adresse": {
+      "main": [
+        [{ "node": "Sheets — En attente adresse", "type": "main", "index": 0 }]
+      ]
+    },
+    "Sheets — Vérifier stock": {
+      "main": [
+        [{ "node": "Stock disponible ?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Stock disponible ?": {
+      "main": [
+        [{ "node": "Générer numéro commande", "type": "main", "index": 0 }],
+        [{ "node": "Gmail — Alerte rupture", "type": "main", "index": 0 }]
+      ]
+    },
+    "Gmail — Alerte rupture": {
+      "main": [
+        [{ "node": "Sheets — Rupture stock", "type": "main", "index": 0 }]
+      ]
+    },
+    "Générer numéro commande": {
+      "main": [
+        [{ "node": "Sheets — Enregistrer commande", "type": "main", "index": 0 }]
+      ]
+    },
+    "Sheets — Enregistrer commande": {
+      "main": [
+        [{ "node": "Gmail — Confirmation commande", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "meta": {
+    "templateId": "talk2flow-pme-order-v1",
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "tags": ["talk2flow", "commandes", "gmail", "google-sheets"],
+
+  "_deployment_notes": {
+    "before_activating": [
+      "1. Remplacer REPLACE_WITH_CREDENTIAL_ID par l'ID réel des credentials Gmail (OAuth2)",
+      "2. Remplacer REPLACE_WITH_CREDENTIAL_ID par l'ID réel des credentials Google Sheets (OAuth2)",
+      "3. Remplacer REPLACE_WITH_GOOGLE_SHEET_ID par l'ID du Google Sheet 'Commandes & Stocks' de Marc",
+      "4. Vérifier que l'onglet 'Stocks' a bien une colonne 'Produit' et une colonne 'Stock_disponible'",
+      "5. Vérifier que l'onglet 'Commandes' a les colonnes : Date, Numéro, Nom client, Email, Produit, Quantité, Adresse, Statut, Source",
+      "6. Tester sur 5 vrais emails de commande en mode 'Test workflow' avant d'activer",
+      "7. Mettre active: true une fois les tests validés"
+    ],
+    "credentials_to_create": [
+      "Gmail OAuth2 : compte Gmail de Marc (marc@laboiteartisanale.fr) — scopes : gmail.readonly + gmail.send",
+      "Google Sheets OAuth2 : même compte Google — scope : spreadsheets"
+    ]
+  }
+}

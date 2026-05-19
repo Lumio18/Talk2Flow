@@ -1,0 +1,185 @@
+{
+  "spec_version": "1.0",
+  "spec_date": "2026-05-14",
+  "language": "fr",
+  "company": "La Boîte Artisanale",
+  "opportunity_id": "OPP01+OPP02+OPP04",
+  "opportunity_name": "Automatisation de la prise de commande email avec vérification de stock",
+
+  "objective": "Détecter automatiquement les emails de commande dans Gmail, extraire les informations clés, vérifier les stocks, enregistrer dans Google Sheets, envoyer la confirmation au client (ou une alerte si rupture ou adresse manquante) — sans intervention humaine pour les cas standard.",
+
+  "trigger": {
+    "type": "email_received",
+    "system": "Gmail",
+    "filter": "Objet contient 'commande' OU 'commander' OU 'order' (insensible à la casse)",
+    "polling_interval_minutes": 5,
+    "note": "Les emails ne correspondant pas au filtre ne déclenchent pas le workflow."
+  },
+
+  "inputs": [
+    { "field": "email_from", "source": "Gmail", "required": true },
+    { "field": "email_subject", "source": "Gmail", "required": true },
+    { "field": "email_body", "source": "Gmail", "required": true },
+    { "field": "email_received_at", "source": "Gmail", "required": true }
+  ],
+
+  "steps": [
+    {
+      "step_id": "S01",
+      "name": "Extraire les champs de la commande",
+      "type": "data_extraction",
+      "implementation": "Code JavaScript (LLM-assisted parsing ou regex structuré)",
+      "logic": "Parser le corps du mail pour extraire : nom_client, email_client, produit(s) commandé(s), quantité(s), adresse_livraison. Valeurs manquantes → null.",
+      "outputs": {
+        "nom_client": "string | null",
+        "email_client": "string",
+        "produits": "[{nom: string, quantite: number}]",
+        "adresse_livraison": "string | null"
+      },
+      "human_checkpoint": false
+    },
+    {
+      "step_id": "S02",
+      "name": "Vérifier si l'adresse est présente",
+      "type": "conditional",
+      "logic": "IF adresse_livraison == null → branche 'adresse manquante'. ELSE → continuer vers S03.",
+      "branches": {
+        "adresse_manquante": "S02b",
+        "adresse_presente": "S03"
+      }
+    },
+    {
+      "step_id": "S02b",
+      "name": "Envoyer une demande d'adresse au client",
+      "type": "send_email",
+      "system": "Gmail",
+      "template": "email-address-request",
+      "then": "Enregistrer commande dans Google Sheets avec statut='En attente adresse'. FIN du workflow pour cette commande.",
+      "human_checkpoint": false
+    },
+    {
+      "step_id": "S03",
+      "name": "Vérifier le stock du produit",
+      "type": "read_data",
+      "system": "Google Sheets",
+      "sheet": "Stocks",
+      "lookup": "Chercher la ligne où colonne 'Produit' = nom_produit. Lire colonne 'Stock_disponible'.",
+      "outputs": {
+        "stock_disponible": "number | null"
+      },
+      "note": "Si plusieurs produits commandés, vérifier le stock de chacun. Si l'un est en rupture, traiter l'ensemble comme rupture."
+    },
+    {
+      "step_id": "S04",
+      "name": "Vérifier si stock suffisant",
+      "type": "conditional",
+      "logic": "IF stock_disponible == null OR stock_disponible < quantite_commandee → branche 'rupture'. ELSE → continuer vers S05.",
+      "branches": {
+        "rupture": "S04b",
+        "stock_ok": "S05"
+      }
+    },
+    {
+      "step_id": "S04b",
+      "name": "Notifier Marc et Julien d'une rupture de stock",
+      "type": "send_email",
+      "system": "Gmail",
+      "recipients": ["marc@laboiteartisanale.fr", "julien@laboiteartisanale.fr"],
+      "template": "email-stock-alert",
+      "then": "Enregistrer commande dans Google Sheets avec statut='Rupture stock'. FIN du workflow pour cette commande.",
+      "human_checkpoint": true,
+      "human_checkpoint_note": "Marc doit contacter le client manuellement pour proposer une alternative."
+    },
+    {
+      "step_id": "S05",
+      "name": "Générer le numéro de commande",
+      "type": "compute",
+      "logic": "Lire la dernière ligne de l'onglet Commandes dans Google Sheets. Extraire le dernier numéro (format ML-YYYY-NNN). Incrémenter NNN. Construire le nouveau numéro.",
+      "outputs": { "numero_commande": "string (ex: ML-2026-0042)" }
+    },
+    {
+      "step_id": "S06",
+      "name": "Enregistrer la commande dans Google Sheets",
+      "type": "write_data",
+      "system": "Google Sheets",
+      "sheet": "Commandes",
+      "action": "append_row",
+      "fields": [
+        "date_reception",
+        "numero_commande",
+        "nom_client",
+        "email_client",
+        "produit",
+        "quantite",
+        "adresse_livraison",
+        "statut (= 'Confirmée')",
+        "source (= 'Email')"
+      ]
+    },
+    {
+      "step_id": "S07",
+      "name": "Envoyer la confirmation au client",
+      "type": "send_email",
+      "system": "Gmail",
+      "recipient": "email_client",
+      "template": "email-order-confirmation",
+      "variables": ["nom_client", "numero_commande", "produit", "quantite", "adresse_livraison"],
+      "human_checkpoint": false
+    }
+  ],
+
+  "email_templates": [
+    {
+      "id": "email-order-confirmation",
+      "subject": "Votre commande {{numero_commande}} est confirmée — La Boîte Artisanale",
+      "body_fr": "Bonjour {{nom_client}},\n\nNous avons bien reçu votre commande et elle est enregistrée.\n\n📦 Récapitulatif :\n- Commande n° : {{numero_commande}}\n- Produit : {{produit}}\n- Quantité : {{quantite}}\n- Adresse de livraison : {{adresse_livraison}}\n\nVous recevrez votre colis dans 3 à 5 jours ouvrés.\n\nMerci pour votre confiance !\n\nMarc\nLa Boîte Artisanale"
+    },
+    {
+      "id": "email-address-request",
+      "subject": "Votre commande — adresse de livraison manquante",
+      "body_fr": "Bonjour {{nom_client}},\n\nNous avons bien reçu votre commande pour {{produit}}.\n\nPourriez-vous nous communiquer votre adresse de livraison complète pour que nous puissions préparer l'expédition ?\n\nMerci d'avance,\n\nMarc\nLa Boîte Artisanale"
+    },
+    {
+      "id": "email-stock-alert",
+      "subject": "[ALERTE] Rupture stock — commande de {{nom_client}}",
+      "body_fr": "Alerte rupture de stock.\n\nClient : {{nom_client}} ({{email_client}})\nProduit : {{produit}}\nQuantité demandée : {{quantite}}\nStock disponible : {{stock_disponible}}\n\nAction requise : contacter le client pour proposer un délai ou un remboursement.\n\n— Workflow La Boîte Artisanale"
+    }
+  ],
+
+  "error_handling": [
+    {
+      "scenario": "Email de commande non parseable (format trop inhabituel)",
+      "action": "Envoyer une notification à Marc avec le mail original en pièce jointe. Statut Google Sheets = 'À traiter manuellement'."
+    },
+    {
+      "scenario": "Feuille Google Sheets inaccessible",
+      "action": "Arrêter le workflow. Envoyer une alerte à Marc. Ne pas envoyer de confirmation au client."
+    },
+    {
+      "scenario": "Produit non trouvé dans l'onglet Stocks",
+      "action": "Traiter comme rupture (S04b) — alerte à Marc et Julien."
+    }
+  ],
+
+  "confidence_flags": {
+    "enterprise_deployment_required": false,
+    "node_mapping_incomplete": false,
+    "human_checkpoint_required": true,
+    "human_checkpoint_details": "Ruptures de stock et emails non parsables nécessitent une action manuelle de Marc",
+    "extraction_reliability_risk": true,
+    "extraction_risk_note": "La fiabilité de l'extraction dépend du format réel des emails. Tester sur 20 vrais emails avant la mise en production."
+  },
+
+  "deployment": {
+    "recommended_builder": "n8n",
+    "deployment_model": "n8n Cloud (plan Starter ~20€/mois) OU self-hosted sur VPS OVH (~5€/mois + gestion Romain)",
+    "deployer": "Romain (freelance)",
+    "estimated_setup_hours": 5,
+    "estimated_setup_cost_eur": 300,
+    "credentials_required": [
+      { "service": "Gmail", "type": "OAuth2", "scope": "gmail.readonly + gmail.send" },
+      { "service": "Google Sheets", "type": "OAuth2", "scope": "spreadsheets" }
+    ],
+    "maintenance": "Marc peut modifier les templates email depuis l'interface n8n sans toucher au code. Les modifications de logique (nouveaux produits, nouvelles règles) nécessitent Romain."
+  }
+}

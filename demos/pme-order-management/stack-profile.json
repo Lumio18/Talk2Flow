@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "profile_date": "2026-05-14",
+  "language": "fr",
+  "company": "La Boîte Artisanale",
+
+  "tools": [
+    {
+      "name": "Gmail",
+      "category": "email",
+      "vendor": "Google",
+      "plan": "Google Workspace Business Starter",
+      "monthly_cost_eur": 6,
+      "api_available": true,
+      "integration_ready": true,
+      "note": "Boîte principale de Marc — toutes les commandes arrivent ici"
+    },
+    {
+      "name": "Google Sheets",
+      "category": "spreadsheet",
+      "vendor": "Google",
+      "plan": "inclus dans Google Workspace",
+      "monthly_cost_eur": 0,
+      "api_available": true,
+      "integration_ready": true,
+      "note": "Suivi commandes (onglet Commandes) + stocks (onglet Stocks)"
+    },
+    {
+      "name": "PrestaShop",
+      "category": "e-commerce platform",
+      "vendor": "PrestaShop SA",
+      "plan": "auto-hébergé (OVH)",
+      "monthly_cost_eur": 15,
+      "api_available": true,
+      "integration_ready": true,
+      "note": "Gère les commandes en ligne — hors scope V1, mais API disponible pour future extension"
+    },
+    {
+      "name": "Microsoft Word",
+      "category": "document editor",
+      "vendor": "Microsoft",
+      "plan": "Microsoft 365 Personnel",
+      "monthly_cost_eur": 7,
+      "api_available": false,
+      "integration_ready": false,
+      "note": "Utilisé uniquement pour le modèle de facture — candidat au remplacement"
+    },
+    {
+      "name": "Adobe Acrobat Reader",
+      "category": "pdf generator",
+      "vendor": "Adobe",
+      "plan": "gratuit",
+      "monthly_cost_eur": 0,
+      "api_available": false,
+      "integration_ready": false,
+      "note": "Utilisé pour générer les PDF de factures depuis Word"
+    }
+  ],
+
+  "budget": {
+    "current_monthly_tools_eur": 28,
+    "automation_budget_max_monthly_eur": 100,
+    "automation_budget_preferred_monthly_eur": 50,
+    "one_time_deployment_budget_eur": 500,
+    "notes": "Marc est ouvert à 30-50€/mois si le ROI est clair. Au-delà de 100€/mois, il faudrait justifier."
+  },
+
+  "team_technical_profile": {
+    "founder_technical_level": "low_intermediate",
+    "founder_capabilities": [
+      "Modifier un template d'email dans une interface no-code",
+      "Ajouter une ligne dans un tableau de règles",
+      "Comprendre un workflow visuel sans écrire de code",
+      "Gérer des credentials dans une interface simple"
+    ],
+    "founder_limits": [
+      "Ne peut pas écrire ou débugger du code",
+      "Ne veut pas gérer une infrastructure serveur",
+      "Ne peut pas interpréter des logs techniques"
+    ],
+    "deployer": {
+      "name": "Romain",
+      "role": "Freelance développeur web",
+      "availability": "Sur commande, répond en 24h, peut intervenir en 1-2 jours",
+      "estimated_hourly_rate_eur": 60,
+      "technical_level": "intermediate_advanced",
+      "capabilities": [
+        "Configure PrestaShop",
+        "À l'aise avec des outils no-code/low-code",
+        "Peut configurer n8n, gérer des credentials API",
+        "Peut écrire un nœud Code JavaScript simple"
+      ]
+    }
+  },
+
+  "compliance": {
+    "regulated_industry": false,
+    "industry_type": "retail_food",
+    "data_residency_constraints": "none",
+    "personal_data_handled": true,
+    "personal_data_types": ["noms clients", "adresses", "emails"],
+    "existing_compliance_processes": "Mentions RGPD sur le site, pas de DPO formalisé",
+    "cloud_restrictions": "none",
+    "on_premise_required": false
+  },
+
+  "deployment_context": {
+    "hosting_preference": "cloud",
+    "maintenance_model": "self_service_no_code",
+    "deployment_timeline": "1-2 semaines",
+    "risk_tolerance": "medium",
+    "notes": "Marc veut pouvoir modifier les templates et ajouter des règles lui-même. Le déploiement initial sera fait par Romain. La maintenance courante doit être accessible à Marc sans assistance."
+  },
+
+  "enterprise_deployment_required": false,
+  "enterprise_signals_detected": [],
+
+  "recommended_builder": "n8n",
+  "builder_rationale": "n8n Community Edition (self-hosted ou cloud) répond exactement au profil : workflow visuel, nœuds natifs Gmail + Google Sheets, gratuit en self-hosted ou ~20€/mois cloud. Interface accessible pour modifications mineures par Marc. Romain peut déployer et configurer en 4-6h."
+}
