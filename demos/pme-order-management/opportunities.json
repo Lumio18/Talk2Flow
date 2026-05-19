@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "analysis_date": "2026-05-14",
   "source": "process-inventory.json",
-  "language": "fr",
+  "language": "en",
   "analyst_assumptions": {
     "hourly_rate_founder": 50,
     "currency": "EUR",
@@ -14,26 +14,26 @@
   "opportunities": [
     {
       "id": "OPP01",
-      "name": "Automatisation complète de la prise de commande email",
-      "description": "Détecter automatiquement les emails de commande dans Gmail, extraire les champs clés (client, produit, quantité, adresse), les enregistrer dans Google Sheets, vérifier le stock, et envoyer la confirmation — sans intervention humaine pour les cas standard.",
+      "name": "Full automation of email order processing",
+      "description": "Automatically detect order emails in Gmail, extract key fields (customer, product, quantity, address), log them in Google Sheets, check stock, and send confirmation — without human intervention for standard cases.",
       "processes_targeted": ["P01", "P02", "P03"],
       "pain_points_addressed": ["PP01", "PP02", "PP05"],
 
       "effort": {
         "score": 2,
-        "label": "Faible",
-        "rationale": "Outils natifs disponibles (Gmail Trigger + Google Sheets dans n8n). Complexité principale : extraction des champs depuis un corps de mail en langage naturel (node Code + prompt LLM). 4-6h de travail freelance estimées."
+        "label": "Low",
+        "rationale": "Native tools available (Gmail Trigger + Google Sheets in n8n). Main complexity: extracting fields from a natural-language email body (Code node + LLM prompt). 4–6h of freelance work estimated."
       },
       "impact": {
         "score": 5,
-        "label": "Très élevé",
-        "rationale": "Élimine ~30 min/jour de copier-coller + les oublis de confirmation. Gagne en fiabilité client. Impact ROI direct et visible dès la première semaine."
+        "label": "Very high",
+        "rationale": "Eliminates ~30 min/day of copy-paste + missed confirmations. Improves customer reliability. Direct, visible ROI impact from week one."
       },
       "quadrant": "quick_win",
 
       "roi": {
         "time_saved_hours_per_year": 130,
-        "time_saved_calculation": "30 min/jour × 5 jours/semaine × 48 semaines + 10 min/jour oublis/relances × 5 × 48",
+        "time_saved_calculation": "30 min/day × 5 days/week × 48 weeks + 10 min/day missed/follow-up × 5 × 48",
         "value_saved_eur_per_year": 6500,
         "implementation_cost_eur": 400,
         "monthly_tool_cost_eur": 25,
@@ -41,7 +41,7 @@
         "net_annual_benefit_eur": 5800,
         "payback_weeks": 3,
         "confidence": "medium",
-        "confidence_note": "Le temps gagné dépend du format réel des emails entrants. Si 30% nécessitent une validation humaine, le gain réel est ~70% de l'estimé."
+        "confidence_note": "Time saved depends on the actual format of incoming emails. If 30% require human validation, actual gain is ~70% of the estimate."
       },
 
       "dependencies": [],
@@ -50,26 +50,26 @@
     },
     {
       "id": "OPP02",
-      "name": "Alerte proactive rupture de stock pré-confirmation",
-      "description": "Avant d'envoyer la confirmation au client, vérifier le niveau de stock dans Google Sheets en temps réel. Si rupture détectée : ne pas envoyer la confirmation, envoyer une alerte à Marc et Julien, mettre la commande en statut 'À traiter'. Éliminer les confirmations envoyées à tort suivies d'annulations.",
+      "name": "Proactive pre-confirmation out-of-stock alert",
+      "description": "Before sending the confirmation to the customer, check stock level in Google Sheets in real time. If out of stock: do not send the confirmation, send an alert to Marc and Julien, set order status to 'To handle'. Eliminate confirmations sent in error followed by cancellations.",
       "processes_targeted": ["P04"],
       "pain_points_addressed": ["PP03"],
 
       "effort": {
         "score": 2,
-        "label": "Faible",
-        "rationale": "S'intègre dans le workflow OPP01 comme branche conditionnelle (IF node). Pas de système supplémentaire requis."
+        "label": "Low",
+        "rationale": "Integrates into the OPP01 workflow as a conditional branch (IF node). No additional system required."
       },
       "impact": {
         "score": 4,
-        "label": "Élevé",
-        "rationale": "Élimine la gestion de crise (45 min × 2-3/mois) et préserve la relation client. Impact qualitatif majeur sur la fidélisation."
+        "label": "High",
+        "rationale": "Eliminates crisis management (45 min × 2–3/month) and preserves the customer relationship. Major qualitative impact on retention."
       },
       "quadrant": "quick_win",
 
       "roi": {
         "time_saved_hours_per_year": 27,
-        "time_saved_calculation": "2.5 ruptures/mois × 0.75h × 12 mois",
+        "time_saved_calculation": "2.5 outages/month × 0.75h × 12 months",
         "value_saved_eur_per_year": 1350,
         "implementation_cost_eur": 0,
         "monthly_tool_cost_eur": 0,
@@ -77,7 +77,7 @@
         "net_annual_benefit_eur": 1350,
         "payback_weeks": 0,
         "confidence": "high",
-        "confidence_note": "Dépend de la mise à jour régulière du stock par Delphine dans Google Sheets — condition nécessaire non automatisée."
+        "confidence_note": "Depends on Delphine regularly updating stock in Google Sheets — a necessary condition that is not itself automated."
       },
 
       "dependencies": ["OPP01"],
@@ -86,26 +86,26 @@
     },
     {
       "id": "OPP03",
-      "name": "Automatisation de la facturation hebdomadaire",
-      "description": "Chaque vendredi, générer automatiquement les factures PDF pour toutes les commandes de la semaine à partir du Google Sheet, les numéroter séquentiellement, et les envoyer aux clients par email.",
+      "name": "Automated weekly invoicing",
+      "description": "Every Friday, automatically generate PDF invoices for all orders of the week from the Google Sheet, number them sequentially, and email them to customers.",
       "processes_targeted": ["P05"],
       "pain_points_addressed": ["PP04"],
 
       "effort": {
         "score": 3,
-        "label": "Moyen",
-        "rationale": "Nécessite soit un outil de facturation (Pennylane, Invoice Ninja) soit une génération PDF via script (Google Apps Script ou n8n + template). Plus complexe qu'un simple trigger email."
+        "label": "Medium",
+        "rationale": "Requires either an invoicing tool (Pennylane, Invoice Ninja) or PDF generation via script (Google Apps Script or n8n + template). More complex than a simple email trigger."
       },
       "impact": {
         "score": 4,
-        "label": "Élevé",
-        "rationale": "2h/semaine × 48 semaines = 96h/an récupérées. Tâche purement répétitive sans valeur ajoutée pour Marc."
+        "label": "High",
+        "rationale": "2h/week × 48 weeks = 96h/year recovered. Purely repetitive task with no added value for Marc."
       },
       "quadrant": "major_project",
 
       "roi": {
         "time_saved_hours_per_year": 96,
-        "time_saved_calculation": "2h × 48 semaines",
+        "time_saved_calculation": "2h × 48 weeks",
         "value_saved_eur_per_year": 4800,
         "implementation_cost_eur": 800,
         "monthly_tool_cost_eur": 20,
@@ -113,7 +113,7 @@
         "net_annual_benefit_eur": 3760,
         "payback_weeks": 9,
         "confidence": "medium",
-        "confidence_note": "Le coût et délai varient selon l'outil retenu. En franchise TVA, la complexité comptable est faible — favorable à une automatisation simple."
+        "confidence_note": "Cost and timeline vary by tool chosen. VAT-exempt status keeps accounting complexity low — favourable for simple automation."
       },
 
       "dependencies": [],
@@ -122,26 +122,26 @@
     },
     {
       "id": "OPP04",
-      "name": "Relance automatique pour adresse manquante",
-      "description": "Quand un email de commande est reçu sans adresse de livraison, envoyer automatiquement un email de relance au client pour demander l'adresse, et mettre la commande en attente dans Google Sheets.",
+      "name": "Automatic follow-up for missing address",
+      "description": "When an order email is received without a shipping address, automatically send a follow-up email to the customer asking for the address, and put the order on hold in Google Sheets.",
       "processes_targeted": ["P02"],
       "pain_points_addressed": ["PP05"],
 
       "effort": {
         "score": 1,
-        "label": "Très faible",
-        "rationale": "Extension du workflow OPP01 : une branche IF supplémentaire sur le champ 'adresse' manquant."
+        "label": "Very low",
+        "rationale": "Extension of the OPP01 workflow: one additional IF branch on the missing 'address' field."
       },
       "impact": {
         "score": 2,
-        "label": "Modéré",
-        "rationale": "Concerne 30% des commandes. Réduit les échanges manuels et fluidifie le processus, mais l'impact en temps absolu est limité."
+        "label": "Moderate",
+        "rationale": "Affects 30% of orders. Reduces manual back-and-forth and smooths the process, but the absolute time impact is limited."
       },
       "quadrant": "fill_in",
 
       "roi": {
         "time_saved_hours_per_year": 25,
-        "time_saved_calculation": "2500 commandes × 30% sans adresse × 2 min de relance manuelle / 60",
+        "time_saved_calculation": "2500 orders × 30% without address × 2 min manual follow-up / 60",
         "value_saved_eur_per_year": 1250,
         "implementation_cost_eur": 0,
         "monthly_tool_cost_eur": 0,
@@ -149,7 +149,7 @@
         "net_annual_benefit_eur": 1250,
         "payback_weeks": 0,
         "confidence": "medium",
-        "confidence_note": "Nécessite que le workflow puisse détecter l'absence d'adresse — dépend de la qualité de l'extraction OPP01."
+        "confidence_note": "Requires the workflow to detect a missing address — depends on OPP01 extraction quality."
       },
 
       "dependencies": ["OPP01"],
@@ -169,7 +169,7 @@
     {
       "phase": 1,
       "opportunities": ["OPP01", "OPP02", "OPP04"],
-      "rationale": "OPP01 est le cœur du workflow. OPP02 et OPP04 en sont des extensions naturelles — ils se construisent en même temps, sans coût additionnel significatif.",
+      "rationale": "OPP01 is the core of the workflow. OPP02 and OPP04 are natural extensions — they are built at the same time at no significant additional cost.",
       "estimated_deployment_days": 2,
       "estimated_monthly_cost_eur": 25,
       "annual_benefit_eur": 8600
@@ -177,7 +177,7 @@
     {
       "phase": 2,
       "opportunities": ["OPP03"],
-      "rationale": "Une fois le workflow principal stabilisé (2-4 semaines de run), ajouter la facturation automatique.",
+      "rationale": "Once the main workflow is stable (2–4 weeks of operation), add automated invoicing.",
       "estimated_deployment_days": 3,
       "estimated_monthly_cost_eur": 20,
       "annual_benefit_eur": 3760
@@ -195,17 +195,17 @@
   "pipeline_breaks_detected": [
     {
       "id": "BREAK01",
-      "description": "Stocks mis à jour en fin de journée par Delphine — les commandes du matin sont validées sur des données J-1",
+      "description": "Stock updated end-of-day by Delphine — morning orders are validated against previous-day data",
       "severity": "high",
       "processes": ["P02", "P04"],
-      "recommended_fix": "Soit Delphine met à jour les stocks en temps réel, soit le workflow marque automatiquement les commandes 'À valider stock' et Marc confirme manuellement"
+      "recommended_fix": "Either Delphine updates stock in real time, or the workflow automatically marks orders 'Pending stock check' for Marc to confirm manually"
     },
     {
       "id": "BREAK02",
-      "description": "Numéro de commande incrémenté manuellement — risque de doublons entre commandes email et PrestaShop",
+      "description": "Order number incremented manually — risk of duplicates between email orders and PrestaShop orders",
       "severity": "medium",
       "processes": ["P02"],
-      "recommended_fix": "Utiliser un préfixe pour différencier les commandes email (ex: 'ML-2026-001') vs PrestaShop"
+      "recommended_fix": "Use a prefix to distinguish email orders (e.g. 'ML-2026-001') from PrestaShop orders"
     }
   ]
 }

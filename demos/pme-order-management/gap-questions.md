@@ -1,109 +1,109 @@
-# Gap Detection — Compléments post-entretien
+# Gap Detection — Post-interview supplements
 
-> **Étape** : Phase 1, Step 2–4 — interview-guide (Mode 2 / transcription existante)  
-> **Transcript analysé** : `transcript.md`  
-> **Langue détectée** : Français
-
----
-
-## Analyse des lacunes détectées
-
-Après lecture complète du transcript, 12 lacunes candidates ont été identifiées. Filtrées à 8 questions par ordre d'impact sur la précision des calculs de ROI et la qualité de la spec d'automatisation.
+> **Step**: Phase 1, Steps 2–4 — interview-guide (Mode 2 / existing transcript)
+> **Transcript analysed**: `transcript.md`
+> **Language detected**: English
 
 ---
 
-## Questions complémentaires posées à Marc
+## Gap analysis
 
-J'ai lu la transcription. Avant d'extraire les processus, j'ai 8 questions ciblées — elles rendront l'analyse plus précise et les chiffres de ROI plus fiables.
-
-**Volumes et fréquences**
-
-1. Vous estimez entre 8 et 12 commandes mail par jour. Sur une semaine type, c'est plutôt 8 ou plutôt 12 — et est-ce que ça varie selon les saisons (Noël, fêtes, soldes) ?  
-   *— Le ROI annuel dépend du volume réel, pas d'une fourchette.*
-
-2. Les 2-3 ruptures de stock par mois qui nécessitent une "gestion de crise" — chacune vous prend environ 30 minutes selon vous. C'est bien 30 min de votre temps, ou ça peut monter plus haut (relances multiples, remboursement) ?  
-   *— Ce coût caché change le score de priorité de l'opportunité stock.*
-
-**Outils et systèmes**
-
-3. Votre Google Sheet de suivi commandes — il est partagé avec l'équipe ? Julien et Delphine y ont accès en lecture/écriture, ou c'est votre tableau personnel ?  
-   *— Si le Sheet est partagé, l'automatisation peut aussi notifier Julien directement.*
-
-4. Pour les factures, vous avez mentionné un modèle Word. Vous envoyez les factures en PDF depuis Word, ou par mail directement ? Et vous avez un numéro de TVA — vous êtes assujetti à la TVA ?  
-   *— Détermine si un outil de facturation simple (Fresha, Pennylane free) peut suffire ou si la complexité TVA bloque.*
-
-5. Le freelance Romain — il est disponible facilement (quelques heures sur commande) ou c'est compliqué de le mobiliser ?  
-   *— Impact direct sur le délai et le coût de mise en place du déploiement.*
-
-**Détails de processus**
-
-6. Les commandes mail — les clients envoient les infos dans un format à peu près standard (produit + quantité + adresse dans le corps du mail) ou c'est très variable ? Par exemple : est-ce que certains envoient juste "bonjour, je voudrais de la confiture" sans donner leur adresse ?  
-   *— Si le format est trop variable, l'extraction automatique nécessite une étape de validation humaine.*
-
-7. Quand vous envoyez la confirmation, vous incluez un moyen de paiement ? Les clients paient comment — virement, PayPal, en ligne sur PrestaShop — ou ils ont déjà payé avant de vous écrire ?  
-   *— Détermine si le workflow de confirmation doit inclure un lien de paiement ou juste confirmer.*
-
-8. Vous recevez combien de mails non-commande par jour ? (Questions clients, fournisseurs, autres) — question oui/non : est-ce qu'il y a un filtre Gmail existant, ou tout arrive dans la boîte principale sans étiquette ?  
-   *— Si tout est mélangé, le trigger Gmail devra filtrer sur l'objet — important pour la fiabilité du workflow.*
+After a full read of the transcript, 12 candidate gaps were identified. Filtered to 8 questions ranked by impact on ROI calculation accuracy and automation spec quality.
 
 ---
 
-## Réponses de Marc
+## Follow-up questions asked to Marc
 
-**Réponse 1 — Volumes**
+I've read the transcript. Before extracting processes, I have 8 targeted questions — they will make the analysis more precise and the ROI figures more reliable.
 
-> "En semaine normale c'est plutôt 8 à 10. En décembre et avant Pâques ça monte à 20-25. On va dire 10 en moyenne sur l'année, avec des pointes à 25."
+**Volumes and frequencies**
 
-→ **10 commandes/jour en moyenne, 25 en pic.** ~50 semaines × 5 jours × 10 = 2 500 commandes mail/an.
+1. You estimate between 8 and 12 email orders a day. On a typical week, is it closer to 8 or closer to 12 — and does it vary by season (Christmas, Easter, sales)?
+   *— Annual ROI depends on actual volume, not a range.*
 
-**Réponse 2 — Ruptures de stock**
+2. The 2–3 out-of-stock situations per month that require "crisis management" — you said each takes around 30 minutes. Is that really 30 minutes of your time, or can it go higher (multiple follow-ups, refund processing)?
+   *— This hidden cost changes the priority score for the stock alert opportunity.*
 
-> "30 minutes c'est souvent le minimum. Parfois il faut aller et venir avec le client, c'est plutôt 45-60 minutes quand ça part mal. Mettons 45 minutes en moyenne."
+**Tools and systems**
 
-→ **2-3 ruptures × 45 min = 1h30 à 2h15/mois perdues en gestion de crise.**
+3. Your order tracking Google Sheet — is it shared with the team? Do Julien and Delphine have read/write access, or is it your personal table?
+   *— If the sheet is shared, automation can notify Julien directly.*
 
-**Réponse 3 — Google Sheet partagé**
+4. For invoices, you mentioned a Word template. Do you send invoices as PDFs from Word, or directly by email? And do you have a VAT number — are you VAT registered?
+   *— Determines whether a simple invoicing tool (Fresha, Pennylane free tier) will suffice or if VAT complexity is a blocker.*
 
-> "Oui, Julien est en lecture seule. Delphine peut modifier l'onglet Stocks. C'est partagé en lecture avec tout le monde mais l'onglet Commandes c'est moi qui le gère principalement."
+5. The freelancer Romain — is he easily available (a few hours on request) or difficult to mobilise?
+   *— Direct impact on deployment timeline and cost.*
 
-→ Julien peut être notifié automatiquement quand une commande est enregistrée.
+**Process details**
 
-**Réponse 4 — Facturation TVA**
+6. Email orders — do customers send information in a roughly standard format (product + quantity + address in the email body) or is it highly variable? For example: do some people just write "hello, I'd like some jam" without giving their address?
+   *— If the format is too variable, automatic extraction will require a human validation step.*
 
-> "Je suis en franchise de base TVA — en dessous du seuil. Donc pas de TVA sur mes factures. Je génère le PDF depuis Word avec Acrobat Reader, et j'envoie par mail manuellement."
+7. When you send the confirmation, do you include payment details? How do customers pay — bank transfer, PayPal, online on PrestaShop — or have they already paid before writing to you?
+   *— Determines whether the confirmation workflow needs to include a payment link or just confirm the order.*
 
-→ Franchise TVA simplifie l'automatisation. Pas de calcul complexe.
-
-**Réponse 5 — Disponibilité Romain**
-
-> "Il répond en général dans la journée, il est flexible. Je lui donne du travail 2-3 fois par an. Pour un truc simple il peut intervenir en 1-2 jours."
-
-→ Déploiement possible rapidement, Romain = deployer idéal pour ce projet.
-
-**Réponse 6 — Format des mails commande**
-
-> "C'est variable mais pas catastrophique. 70% des clients donnent tout — produit, quantité, adresse. Les 30% restants oublient soit l'adresse soit la quantité exacte. J'ai souvent à les relancer pour l'adresse."
-
-→ Le workflow devra inclure une vérification "adresse manquante" et une relance automatique dans ce cas.
-
-**Réponse 7 — Paiement**
-
-> "Les clients paient au moment de la livraison (virement ou chèque) ou en ligne sur PrestaShop quand ils commandent par le site. Les commandes mail c'est souvent des clients réguliers qui font confiance — ils paient à réception. La confirmation leur dit juste que c'est bien noté."
-
-→ Pas de lien de paiement dans la confirmation. Workflow simplifié.
-
-**Réponse 8 — Tri des mails**
-
-> "Tout arrive dans la même boîte. J'ai pas de filtre. Parfois les commandes ont 'Commande' dans l'objet, parfois non. Il y a peut-être 30-40 mails non-commande par jour."
-
-→ Le trigger Gmail doit utiliser une heuristique sur l'objet (keywords: "commande", "commander", "order") + confirmation humaine pour les cas ambigus.
+8. How many non-order emails do you receive per day? (Customer questions, suppliers, other) — yes/no question: is there an existing Gmail filter, or does everything arrive in the main inbox without labels?
+   *— If everything is mixed, the Gmail trigger will need to filter by subject — important for workflow reliability.*
 
 ---
 
-## Zones d'incertitude restantes (`unclear_areas`)
+## Marc's answers
 
-| Zone | Raison | Impact |
+**Answer 1 — Volumes**
+
+> "In a normal week it's more like 8 to 10. In December and before Easter it goes up to 20–25. Let's say 10 on average over the year, with peaks at 25."
+
+→ **10 orders/day on average, 25 at peak.** ~50 weeks × 5 days × 10 = 2,500 email orders/year.
+
+**Answer 2 — Stock outages**
+
+> "30 minutes is often the minimum. Sometimes you have to go back and forth with the customer, it's more like 45–60 minutes when it goes badly. Let's say 45 minutes on average."
+
+→ **2–3 outages × 45 min = 1h30 to 2h15/month lost to crisis management.**
+
+**Answer 3 — Shared Google Sheet**
+
+> "Yes, Julien has read-only access. Delphine can edit the Stock tab. It's shared in read mode with everyone but the Orders tab is mainly managed by me."
+
+→ Julien can be automatically notified when an order is logged.
+
+**Answer 4 — Invoicing and VAT**
+
+> "I'm on the basic VAT exemption — below the threshold. So no VAT on my invoices. I generate the PDF from Word with Acrobat Reader, and send by email manually."
+
+→ VAT exemption simplifies automation. No complex tax calculation needed.
+
+**Answer 5 — Romain's availability**
+
+> "He usually responds within the day, he's flexible. I give him work 2–3 times a year. For something simple he can turn it around in 1–2 days."
+
+→ Deployment can happen quickly, Romain is the ideal deployer for this project.
+
+**Answer 6 — Order email format**
+
+> "It's variable but not catastrophic. 70% of customers give everything — product, quantity, address. The other 30% forget either the address or the exact quantity. I often have to follow up for the address."
+
+→ The workflow must include a "missing address" check and an automatic follow-up in that case.
+
+**Answer 7 — Payment**
+
+> "Customers pay on delivery (bank transfer or cheque) or online on PrestaShop when they order through the website. Email orders are usually from regular customers who trust us — they pay on receipt. The confirmation just tells them it's been noted."
+
+→ No payment link in the confirmation. Simplified workflow.
+
+**Answer 8 — Email sorting**
+
+> "Everything comes into the same inbox. I have no filter. Sometimes orders have 'Order' in the subject, sometimes not. There are maybe 30–40 non-order emails per day."
+
+→ The Gmail trigger must use a subject heuristic (keywords: "order", "ordering", "would like to order") + human review for ambiguous cases.
+
+---
+
+## Remaining uncertainty areas (`unclear_areas`)
+
+| Area | Reason | Impact |
 |---|---|---|
-| Format exact du corps des mails commande | Trop variable pour prototyper sans exemples réels | L'extraction automatique des champs devra être testée sur des vrais mails |
-| Volume exact des commandes téléphone/SMS | Non quantifié dans l'entretien | Hors scope V1 — uniquement les commandes mail |
-| Seuil de déclenchement du réassort | Delphine met à jour les stocks manuellement | Le workflow peut alerter sur rupture mais pas piloter le réassort |
+| Exact format of order email bodies | Too variable to prototype without real examples | Automatic field extraction will need testing on real emails |
+| Exact volume of phone/SMS orders | Not quantified in the interview | Out of scope for V1 — email orders only |
+| Stock reorder threshold | Delphine updates stock manually | Workflow can alert on outage but cannot drive reordering |

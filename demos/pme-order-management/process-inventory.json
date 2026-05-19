@@ -2,140 +2,140 @@
   "schema_version": "1.0",
   "extraction_date": "2026-05-14",
   "source": "transcript.md + gap-questions.md",
-  "language": "fr",
+  "language": "en",
   "context": {
     "company": "La Boîte Artisanale",
-    "industry": "e-commerce artisanal (confitures, miels, savons)",
+    "industry": "artisanal e-commerce (jams, honeys, soaps)",
     "team_size": 5,
-    "operator_role": "fondateur (auto-analyse)",
-    "scope": "gestion des commandes entrantes par email + facturation"
+    "operator_role": "founder (self-analysis)",
+    "scope": "incoming order management by email + invoicing"
   },
 
   "processes": [
     {
       "id": "P01",
-      "name": "Tri et qualification des emails entrants",
-      "trigger": "Ouverture de la boîte Gmail le matin (~8h00)",
+      "name": "Email triage and qualification",
+      "trigger": "Opening Gmail inbox in the morning (~8:00am)",
       "trigger_type": "manual_time_based",
-      "actor": "Marc (fondateur)",
+      "actor": "Marc (founder)",
       "steps": [
-        "Connexion à Gmail",
-        "Lecture des 10 à 40 nouveaux emails",
-        "Identification visuelle des emails de commande (objet + lecture du corps)",
-        "Séparation : commandes vs questions clients vs fournisseurs"
+        "Log into Gmail",
+        "Read 10 to 40 new emails",
+        "Visually identify order emails (subject + reading the body)",
+        "Separate: orders vs customer questions vs supplier emails"
       ],
-      "output": "Liste mentale des emails à traiter comme commandes",
-      "output_recipient": "Marc lui-même",
+      "output": "Mental list of emails to process as orders",
+      "output_recipient": "Marc himself",
       "tools": ["Gmail"],
-      "frequency": "quotidienne (matin)",
-      "volume": "10-40 mails/jour dont 8-12 commandes",
+      "frequency": "daily (morning)",
+      "volume": "10–40 emails/day of which 8–12 are orders",
       "duration_minutes": 15,
       "pain_points": [
-        "Pas de filtre Gmail — tout est mélangé",
-        "Certains mails de commande n'ont pas 'Commande' dans l'objet",
-        "Tri entièrement manuel et cognitif"
+        "No Gmail filter — everything is mixed together",
+        "Some order emails don't have 'Order' in the subject",
+        "Entirely manual and cognitive triage"
       ]
     },
     {
       "id": "P02",
-      "name": "Enregistrement d'une commande email",
-      "trigger": "Email de commande identifié dans P01",
+      "name": "Order entry",
+      "trigger": "Order email identified in P01",
       "trigger_type": "manual",
-      "actor": "Marc (fondateur)",
+      "actor": "Marc (founder)",
       "steps": [
-        "Lecture complète du mail pour extraire : nom client, email, produit(s), quantité(s), adresse de livraison",
-        "Vérification rapide des stocks dans l'onglet Stocks du Google Sheet",
-        "Ouverture du Google Sheet 'Commandes'",
-        "Saisie manuelle : date, nom, email, produit, quantité, adresse, statut='Nouveau'",
-        "Attribution d'un numéro de commande (dernier numéro + 1)"
+        "Read the full email to extract: customer name, email, product(s), quantity/quantities, shipping address",
+        "Quick stock check in the Stock tab of the Google Sheet",
+        "Open Google Sheet 'Orders'",
+        "Manual entry: date, name, email, product, quantity, address, status='New'",
+        "Assign an order number (last number + 1)"
       ],
-      "output": "Ligne ajoutée dans Google Sheet 'Commandes'",
-      "output_recipient": "Julien (lecture seule), Delphine (accès partiel), Marc",
+      "output": "Row added to Google Sheet 'Orders'",
+      "output_recipient": "Julien (read-only), Delphine (partial access), Marc",
       "tools": ["Gmail", "Google Sheets"],
-      "frequency": "8-12 fois/jour",
-      "volume": "~10 commandes/jour (2 500/an)",
+      "frequency": "8–12 times/day",
+      "volume": "~10 orders/day (2,500/year)",
       "duration_minutes": 3,
       "pain_points": [
-        "Copier-coller manuel répétitif (3 min × 10 = 30 min/jour)",
-        "30% des mails manquent l'adresse de livraison — nécessite une relance client",
-        "Stocks pas toujours à jour au moment de la vérification",
-        "Numéro de commande incrémenté manuellement — risque d'erreur ou doublon"
+        "Repetitive manual copy-paste (3 min × 10 = 30 min/day)",
+        "30% of emails are missing the shipping address — requires a customer follow-up",
+        "Stock not always up to date at time of check",
+        "Order number incremented manually — risk of error or duplicate"
       ]
     },
     {
       "id": "P03",
-      "name": "Envoi de la confirmation de commande",
-      "trigger": "Commande enregistrée dans P02 (si stock disponible)",
+      "name": "Order confirmation email",
+      "trigger": "Order logged in P02 (if stock available)",
       "trigger_type": "manual",
-      "actor": "Marc (fondateur)",
+      "actor": "Marc (founder)",
       "steps": [
-        "Ouverture du brouillon de confirmation dans Gmail",
-        "Personnalisation : prénom, produit, quantité, montant, délai estimé, numéro de commande",
-        "Envoi au client"
+        "Open confirmation draft in Gmail",
+        "Personalise: first name, product, quantity, amount, estimated delay, order number",
+        "Send to customer"
       ],
-      "output": "Email de confirmation envoyé au client",
-      "output_recipient": "Client",
+      "output": "Confirmation email sent to customer",
+      "output_recipient": "Customer",
       "tools": ["Gmail"],
-      "frequency": "8-12 fois/jour",
-      "volume": "~10 confirmations/jour",
+      "frequency": "8–12 times/day",
+      "volume": "~10 confirmations/day",
       "duration_minutes": 2,
       "pain_points": [
-        "Risque d'oubli si Marc est interrompu entre P02 et P03",
-        "Personnalisation manuelle à chaque fois malgré un template fixe",
-        "Aucune traçabilité de l'envoi dans le Google Sheet"
+        "Risk of forgetting if Marc is interrupted between P02 and P03",
+        "Manual personalisation every time despite a fixed template",
+        "No record of the send in Google Sheets"
       ]
     },
     {
       "id": "P04",
-      "name": "Gestion des ruptures de stock",
-      "trigger": "Découverte d'une rupture (lors de P02 ou lors de la préparation par Julien)",
+      "name": "Out-of-stock management",
+      "trigger": "Stock outage discovered (during P02 or during fulfilment by Julien)",
       "trigger_type": "exception",
-      "actor": "Marc (fondateur) + Julien (préparation)",
+      "actor": "Marc (founder) + Julien (fulfilment)",
       "steps": [
-        "Détection de la rupture (tardive : souvent 1-2 jours après la commande)",
-        "Appel ou email au client pour s'excuser et proposer : délai de réassort, produit de substitution, ou remboursement",
-        "Attente de la réponse client",
-        "Mise à jour du statut dans Google Sheet",
-        "Si remboursement : traitement manuel du remboursement"
+        "Detect the outage (late: often 1–2 days after the order)",
+        "Call or email the customer to apologise and offer: restock delay, substitute product, or refund",
+        "Wait for customer response",
+        "Update status in Google Sheets",
+        "If refund: process refund manually"
       ],
-      "output": "Commande annulée ou reportée ; client notifié",
-      "output_recipient": "Client, Google Sheet",
+      "output": "Order cancelled or rescheduled; customer notified",
+      "output_recipient": "Customer, Google Sheets",
       "tools": ["Gmail", "Google Sheets"],
-      "frequency": "2-3 fois/mois",
-      "volume": "2-3 incidents/mois",
+      "frequency": "2–3 times/month",
+      "volume": "2–3 incidents/month",
       "duration_minutes": 45,
       "pain_points": [
-        "Détection tardive (confirmation déjà envoyée au client)",
-        "Expérience client dégradée : il a reçu une confirmation puis une annulation",
-        "Temps important : 45 min en moyenne par incident",
-        "Perte de clients fidèles estimée par Marc"
+        "Late detection (confirmation already sent to customer)",
+        "Degraded customer experience: received a confirmation then a cancellation",
+        "Significant time: 45 min average per incident",
+        "Loss of loyal customers estimated by Marc"
       ]
     },
     {
       "id": "P05",
-      "name": "Facturation hebdomadaire",
-      "trigger": "Vendredi après-midi (rituel hebdomadaire)",
+      "name": "Weekly invoicing",
+      "trigger": "Friday afternoon (weekly ritual)",
       "trigger_type": "manual_time_based",
-      "actor": "Marc (fondateur)",
+      "actor": "Marc (founder)",
       "steps": [
-        "Ouverture du Google Sheet 'Commandes', filtre sur la semaine en cours",
-        "Pour chaque commande : ouverture du modèle Word",
-        "Saisie des informations : nom client, adresse, produits, montants, numéro de facture",
-        "Export en PDF via Acrobat Reader",
-        "Envoi par email au client",
-        "Mise à jour du tableau Excel de numérotation"
+        "Open Google Sheet 'Orders', filter on current week",
+        "For each order: open Word template",
+        "Enter information: customer name, address, products, amounts, invoice number",
+        "Export to PDF via Acrobat Reader",
+        "Send by email to customer",
+        "Update the Excel numbering table"
       ],
-      "output": "Factures PDF envoyées aux clients",
-      "output_recipient": "Clients",
+      "output": "PDF invoices sent to customers",
+      "output_recipient": "Customers",
       "tools": ["Google Sheets", "Microsoft Word", "Adobe Acrobat", "Gmail"],
-      "frequency": "hebdomadaire (vendredi)",
-      "volume": "~50 factures/semaine",
+      "frequency": "weekly (Friday)",
+      "volume": "~50 invoices/week",
       "duration_minutes": 120,
       "pain_points": [
-        "2 heures chaque vendredi — tâche purement répétitive",
-        "Risque d'erreurs sur montants ou adresses (génère des avoirs)",
-        "Pas de logiciel dédié : workflow fragile et non scalable",
-        "Aucune numérotation automatique — risque de trou ou doublon"
+        "2 hours every Friday — purely repetitive task",
+        "Risk of errors on amounts or addresses (generates credit notes)",
+        "No dedicated software: fragile and non-scalable workflow",
+        "No automatic numbering — risk of gaps or duplicates"
       ]
     }
   ],
@@ -143,35 +143,35 @@
   "pain_points_summary": [
     {
       "id": "PP01",
-      "description": "30 min/jour de copier-coller pour enregistrer les commandes email",
+      "description": "30 min/day of copy-paste to log email orders",
       "process_ids": ["P02"],
       "quantified": true,
       "value_at_stake_hours_per_year": 130
     },
     {
       "id": "PP02",
-      "description": "Confirmations oubliées ou tardives en cas d'interruption",
+      "description": "Missed or delayed confirmations when interrupted",
       "process_ids": ["P03"],
       "quantified": false,
       "value_at_stake_hours_per_year": null
     },
     {
       "id": "PP03",
-      "description": "Ruptures de stock découvertes tardivement — gestion de crise 45 min × 2-3/mois",
+      "description": "Stock outages discovered late — crisis management 45 min × 2–3/month",
       "process_ids": ["P04"],
       "quantified": true,
       "value_at_stake_hours_per_year": 27
     },
     {
       "id": "PP04",
-      "description": "2h de facturation manuelle chaque vendredi — non scalable",
+      "description": "2h of manual invoicing every Friday — not scalable",
       "process_ids": ["P05"],
       "quantified": true,
       "value_at_stake_hours_per_year": 104
     },
     {
       "id": "PP05",
-      "description": "30% des commandes mail manquent l'adresse — relance client nécessaire",
+      "description": "30% of email orders are missing the address — customer follow-up required",
       "process_ids": ["P02"],
       "quantified": false,
       "value_at_stake_hours_per_year": null
@@ -179,28 +179,28 @@
   ],
 
   "actors": [
-    { "id": "A01", "name": "Marc", "role": "Fondateur / opérateur principal", "processes": ["P01","P02","P03","P04","P05"] },
-    { "id": "A02", "name": "Julien", "role": "Préparation / expédition", "processes": ["P04"] },
-    { "id": "A03", "name": "Delphine", "role": "Production / mise à jour stocks", "processes": ["P04"] },
-    { "id": "A04", "name": "Client", "role": "Destinataire confirmations et factures", "processes": ["P03","P04","P05"] }
+    { "id": "A01", "name": "Marc", "role": "Founder / primary operator", "processes": ["P01","P02","P03","P04","P05"] },
+    { "id": "A02", "name": "Julien", "role": "Fulfilment / dispatch", "processes": ["P04"] },
+    { "id": "A03", "name": "Delphine", "role": "Production / stock updates", "processes": ["P04"] },
+    { "id": "A04", "name": "Customer", "role": "Recipient of confirmations and invoices", "processes": ["P03","P04","P05"] }
   ],
 
   "systems": [
     { "name": "Gmail", "type": "email", "processes": ["P01","P02","P03","P04","P05"] },
     { "name": "Google Sheets", "type": "spreadsheet", "processes": ["P02","P04","P05"] },
-    { "name": "PrestaShop", "type": "e-commerce platform", "processes": [], "note": "Gère les commandes en ligne — hors scope de ce pipeline" },
+    { "name": "PrestaShop", "type": "e-commerce platform", "processes": [], "note": "Handles online orders — out of scope for this pipeline" },
     { "name": "Microsoft Word", "type": "document editor", "processes": ["P05"] },
     { "name": "Adobe Acrobat Reader", "type": "pdf generator", "processes": ["P05"] }
   ],
 
   "unclear_areas": [
-    "Format exact du corps des emails de commande (trop variable pour garantir une extraction automatique sans test sur des vrais emails)",
-    "Volume des commandes téléphone/SMS (non quantifié — hors scope V1)",
-    "Seuil de réassort stocks (Delphine gère manuellement — hors scope V1)"
+    "Exact format of order email bodies (too variable to guarantee automatic extraction without testing on real emails)",
+    "Volume of phone/SMS orders (not quantified — out of scope for V1)",
+    "Stock reorder threshold (Delphine manages manually — out of scope for V1)"
   ],
 
   "scope_boundaries": {
-    "in_scope": ["Commandes reçues par email (Gmail)", "Enregistrement Google Sheets", "Confirmations email", "Alertes rupture de stock", "Facturation hebdomadaire"],
-    "out_of_scope": ["Commandes PrestaShop (déjà automatisées)", "Commandes téléphone/SMS", "Gestion du réassort fournisseurs", "Comptabilité / déclarations fiscales"]
+    "in_scope": ["Email orders (Gmail)", "Google Sheets logging", "Confirmation emails", "Out-of-stock alerts", "Weekly invoicing"],
+    "out_of_scope": ["PrestaShop orders (already automated)", "Phone/SMS orders", "Supplier reorder management", "Accounting / tax filings"]
   }
 }

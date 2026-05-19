@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "profile_date": "2026-05-14",
-  "language": "fr",
+  "language": "en",
   "company": "La Boîte Artisanale",
 
   "tools": [
@@ -13,47 +13,47 @@
       "monthly_cost_eur": 6,
       "api_available": true,
       "integration_ready": true,
-      "note": "Boîte principale de Marc — toutes les commandes arrivent ici"
+      "note": "Marc's primary inbox — all orders arrive here"
     },
     {
       "name": "Google Sheets",
       "category": "spreadsheet",
       "vendor": "Google",
-      "plan": "inclus dans Google Workspace",
+      "plan": "included in Google Workspace",
       "monthly_cost_eur": 0,
       "api_available": true,
       "integration_ready": true,
-      "note": "Suivi commandes (onglet Commandes) + stocks (onglet Stocks)"
+      "note": "Order tracking (Orders tab) + stock levels (Stock tab)"
     },
     {
       "name": "PrestaShop",
       "category": "e-commerce platform",
       "vendor": "PrestaShop SA",
-      "plan": "auto-hébergé (OVH)",
+      "plan": "self-hosted (OVH)",
       "monthly_cost_eur": 15,
       "api_available": true,
       "integration_ready": true,
-      "note": "Gère les commandes en ligne — hors scope V1, mais API disponible pour future extension"
+      "note": "Handles online orders — out of scope for V1, but API available for future extension"
     },
     {
       "name": "Microsoft Word",
       "category": "document editor",
       "vendor": "Microsoft",
-      "plan": "Microsoft 365 Personnel",
+      "plan": "Microsoft 365 Personal",
       "monthly_cost_eur": 7,
       "api_available": false,
       "integration_ready": false,
-      "note": "Utilisé uniquement pour le modèle de facture — candidat au remplacement"
+      "note": "Used only for the invoice template — candidate for replacement"
     },
     {
       "name": "Adobe Acrobat Reader",
       "category": "pdf generator",
       "vendor": "Adobe",
-      "plan": "gratuit",
+      "plan": "free",
       "monthly_cost_eur": 0,
       "api_available": false,
       "integration_ready": false,
-      "note": "Utilisé pour générer les PDF de factures depuis Word"
+      "note": "Used to generate invoice PDFs from Word"
     }
   ],
 
@@ -62,33 +62,33 @@
     "automation_budget_max_monthly_eur": 100,
     "automation_budget_preferred_monthly_eur": 50,
     "one_time_deployment_budget_eur": 500,
-    "notes": "Marc est ouvert à 30-50€/mois si le ROI est clair. Au-delà de 100€/mois, il faudrait justifier."
+    "notes": "Marc is open to €30–50/month if the ROI is clear. Beyond €100/month, a strong justification would be needed."
   },
 
   "team_technical_profile": {
     "founder_technical_level": "low_intermediate",
     "founder_capabilities": [
-      "Modifier un template d'email dans une interface no-code",
-      "Ajouter une ligne dans un tableau de règles",
-      "Comprendre un workflow visuel sans écrire de code",
-      "Gérer des credentials dans une interface simple"
+      "Edit an email template in a no-code interface",
+      "Add a row to a rules table",
+      "Understand a visual workflow without writing code",
+      "Manage credentials in a simple interface"
     ],
     "founder_limits": [
-      "Ne peut pas écrire ou débugger du code",
-      "Ne veut pas gérer une infrastructure serveur",
-      "Ne peut pas interpréter des logs techniques"
+      "Cannot write or debug code",
+      "Does not want to manage server infrastructure",
+      "Cannot interpret technical logs"
     ],
     "deployer": {
       "name": "Romain",
-      "role": "Freelance développeur web",
-      "availability": "Sur commande, répond en 24h, peut intervenir en 1-2 jours",
+      "role": "Freelance web developer",
+      "availability": "On request, responds within 24h, can start in 1–2 days",
       "estimated_hourly_rate_eur": 60,
       "technical_level": "intermediate_advanced",
       "capabilities": [
-        "Configure PrestaShop",
-        "À l'aise avec des outils no-code/low-code",
-        "Peut configurer n8n, gérer des credentials API",
-        "Peut écrire un nœud Code JavaScript simple"
+        "Configures PrestaShop",
+        "Comfortable with no-code/low-code tools",
+        "Can configure n8n, manage API credentials",
+        "Can write a simple JavaScript Code node"
       ]
     }
   },
@@ -98,8 +98,8 @@
     "industry_type": "retail_food",
     "data_residency_constraints": "none",
     "personal_data_handled": true,
-    "personal_data_types": ["noms clients", "adresses", "emails"],
-    "existing_compliance_processes": "Mentions RGPD sur le site, pas de DPO formalisé",
+    "personal_data_types": ["customer names", "addresses", "email addresses"],
+    "existing_compliance_processes": "GDPR notices on the website, no formal DPO",
     "cloud_restrictions": "none",
     "on_premise_required": false
   },
@@ -107,14 +107,14 @@
   "deployment_context": {
     "hosting_preference": "cloud",
     "maintenance_model": "self_service_no_code",
-    "deployment_timeline": "1-2 semaines",
+    "deployment_timeline": "1–2 weeks",
     "risk_tolerance": "medium",
-    "notes": "Marc veut pouvoir modifier les templates et ajouter des règles lui-même. Le déploiement initial sera fait par Romain. La maintenance courante doit être accessible à Marc sans assistance."
+    "notes": "Marc wants to be able to edit templates and add rules himself. Initial deployment will be done by Romain. Day-to-day maintenance must be accessible to Marc without assistance."
   },
 
   "enterprise_deployment_required": false,
   "enterprise_signals_detected": [],
 
   "recommended_builder": "n8n",
-  "builder_rationale": "n8n Community Edition (self-hosted ou cloud) répond exactement au profil : workflow visuel, nœuds natifs Gmail + Google Sheets, gratuit en self-hosted ou ~20€/mois cloud. Interface accessible pour modifications mineures par Marc. Romain peut déployer et configurer en 4-6h."
+  "builder_rationale": "n8n Community Edition (self-hosted or cloud) fits the profile exactly: visual workflow, native Gmail + Google Sheets nodes, free when self-hosted or ~€20/month on cloud. Interface accessible for minor edits by Marc. Romain can deploy and configure in 4–6h."
 }

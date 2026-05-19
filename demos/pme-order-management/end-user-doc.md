@@ -1,120 +1,120 @@
-# Votre workflow de commandes — Guide utilisateur
+# Your Order Workflow — User Guide
 
-**Destinataire** : Marc Dupont, fondateur de La Boîte Artisanale  
-**Ce que ce document vous explique** : comment fonctionne votre nouveau workflow automatique, ce que vous n'avez plus à faire, et quand vous devez intervenir.
-
----
-
-## Ce qui a changé
-
-Avant, chaque matin vous passiez 30 à 45 minutes à :
-- Lire les emails de commande
-- Recopier les infos dans votre Google Sheet
-- Envoyer une confirmation à chaque client
-
-**Maintenant, le workflow s'en charge automatiquement, 24h/24.**
+**For**: Marc Dupont, founder of La Boîte Artisanale
+**What this document explains**: how your new automated workflow works, what you no longer need to do, and when you need to step in.
 
 ---
 
-## Comment ça marche (sans jargon)
+## What has changed
 
-Toutes les 5 minutes, le système regarde si de nouveaux emails contenant les mots "commande" ou "commander" sont arrivés dans Gmail.
+Before, every morning you spent 30 to 45 minutes:
+- Reading order emails
+- Copying information into your Google Sheet
+- Sending a confirmation to each customer
 
-Quand il en trouve un, il :
-
-1. **Lit le mail** et extrait les informations (nom, produit, quantité, adresse)
-2. **Vérifie les stocks** dans votre onglet Stocks du Google Sheet
-3. Selon ce qu'il trouve, **l'une de ces trois choses se passe** :
-
----
-
-### Cas 1 — Tout est bon ✅
-
-Le produit est disponible et l'adresse est présente.
-
-→ Le workflow enregistre la commande dans votre tableau avec le statut **"Confirmée"**  
-→ Un email de confirmation est envoyé automatiquement au client  
-→ Vous n'avez rien à faire
+**Now, the workflow handles this automatically, 24/7.**
 
 ---
 
-### Cas 2 — Adresse manquante 📬
+## How it works (without jargon)
 
-Le client n'a pas donné son adresse de livraison dans l'email.
+Every 5 minutes, the system checks whether new emails containing the words "order" or "ordering" have arrived in Gmail.
 
-→ Le workflow lui envoie automatiquement un email de relance  
-→ La commande est enregistrée dans le tableau avec le statut **"En attente adresse"**  
-→ Quand le client répond avec son adresse, vous mettez à jour le tableau manuellement et envoyez la confirmation
+When it finds one, it:
 
----
-
-### Cas 3 — Rupture de stock ⚠️
-
-Le produit commandé n'est pas disponible en quantité suffisante.
-
-→ Le workflow **ne confirme pas** la commande au client  
-→ Il vous envoie (à vous et à Julien) un email d'alerte avec les détails  
-→ La commande est enregistrée avec le statut **"Rupture stock"**  
-→ **Vous devez contacter le client** pour proposer un délai, un produit de remplacement, ou un remboursement
+1. **Reads the email** and extracts the information (name, product, quantity, address)
+2. **Checks stock** in your Stock tab in Google Sheets
+3. Depending on what it finds, **one of three things happens**:
 
 ---
 
-## Ce que vous devez continuer à faire
+### Case 1 — All good ✅
 
-| Situation | Action requise | Temps estimé |
+The product is available and the address is present.
+
+→ The workflow logs the order in your table with status **"Confirmed"**
+→ A confirmation email is automatically sent to the customer
+→ You have nothing to do
+
+---
+
+### Case 2 — Missing address 📬
+
+The customer did not include a delivery address in their email.
+
+→ The workflow automatically sends them a follow-up email asking for the address
+→ The order is logged in the table with status **"Awaiting address"**
+→ When the customer replies with their address, you update the table manually and send the confirmation
+
+---
+
+### Case 3 — Out of stock ⚠️
+
+The ordered product is not available in sufficient quantity.
+
+→ The workflow **does not confirm** the order to the customer
+→ It sends you (and Julien) an alert email with the details
+→ The order is logged with status **"Out of stock"**
+→ **You must contact the customer** to offer a delay, a substitute product, or a refund
+
+---
+
+## What you still need to do
+
+| Situation | Action required | Estimated time |
 |---|---|---|
-| Rupture de stock détectée | Contacter le client manuellement | ~15-20 min (vs 45 min avant) |
-| Email de commande sans objet clair | Traiter manuellement si le workflow ne l'a pas capturé | 5 min |
-| Mise à jour des stocks | Delphine continue de mettre à jour l'onglet Stocks dans Google Sheets | Inchangé |
-| Commandes par téléphone ou SMS | Saisir manuellement dans le Google Sheet | Inchangé |
+| Out-of-stock detected | Contact the customer manually | ~15–20 min (vs 45 min before) |
+| Order email with no clear subject | Handle manually if the workflow didn't catch it | 5 min |
+| Stock updates | Delphine continues updating the Stock tab in Google Sheets | Unchanged |
+| Phone or SMS orders | Enter manually in Google Sheets | Unchanged |
 
 ---
 
-## Comment vérifier que tout fonctionne
+## How to check that everything is working
 
-Chaque matin, ouvrez votre Google Sheet et regardez les nouvelles lignes dans l'onglet "Commandes". Vous verrez :
+Every morning, open your Google Sheet and look at the new rows in the "Orders" tab. You will see:
 
-- Les commandes confirmées automatiquement (statut "Confirmée")
-- Les commandes en attente d'adresse (statut "En attente adresse")
-- Les ruptures de stock à traiter (statut "Rupture stock")
+- Automatically confirmed orders (status "Confirmed")
+- Orders waiting for an address (status "Awaiting address")
+- Out-of-stock orders to handle (status "Out of stock")
 
-Si vous voyez un email de commande dans Gmail qui n'est pas apparu dans le tableau, c'est probablement parce que l'objet du mail ne contenait pas "commande". Traitez-le manuellement et signalez-le à Romain pour qu'il ajuste le filtre si nécessaire.
-
----
-
-## Modifier les emails automatiques
-
-Si vous souhaitez changer le texte d'un email envoyé automatiquement (l'email de confirmation, l'email de demande d'adresse) :
-
-1. Ouvrez l'interface n8n (l'adresse vous a été communiquée par Romain)
-2. Cliquez sur le workflow "La Boîte Artisanale — Prise de commande email"
-3. Double-cliquez sur le nœud "Gmail — Confirmation commande" (ou "Gmail — Demande adresse")
-4. Modifiez le texte dans le champ "Message"
-5. Cliquez sur "Save" puis fermez la fenêtre
-
-**Important** : ne touchez pas aux `{{ }}` dans le texte — ce sont les champs qui se remplissent automatiquement (nom du client, numéro de commande, etc.).
+If you see an order email in Gmail that hasn't appeared in the table, it's probably because the email subject didn't contain "order". Handle it manually and let Romain know so he can adjust the filter if needed.
 
 ---
 
-## En cas de problème
+## Editing automatic emails
 
-| Symptôme | Que faire |
+If you want to change the text of an automatically sent email (the confirmation email, the address request email):
+
+1. Open the n8n interface (the URL was given to you by Romain)
+2. Click on the workflow "La Boîte Artisanale — Email Order Processing"
+3. Double-click on the "Gmail — Order Confirmation" node (or "Gmail — Request Address")
+4. Edit the text in the "Message" field
+5. Click "Save" then close the window
+
+**Important**: do not touch the `{{ }}` in the text — those are the fields that fill in automatically (customer name, order number, etc.).
+
+---
+
+## If something goes wrong
+
+| Symptom | What to do |
 |---|---|
-| Le workflow ne capte pas les nouvelles commandes | Vérifier que Gmail est connecté dans n8n (demander à Romain) |
-| Un client dit ne pas avoir reçu de confirmation | Vérifier le statut dans Google Sheets — s'il est "Confirmée", l'email est parti. Vérifier les spams du client. |
-| Une erreur apparaît dans n8n | Faire une capture d'écran et l'envoyer à Romain |
-| Le stock est à zéro mais il reste des produits | Demander à Delphine de mettre à jour l'onglet Stocks |
+| The workflow is not picking up new orders | Check that Gmail is connected in n8n (ask Romain) |
+| A customer says they didn't receive a confirmation | Check the status in Google Sheets — if it shows "Confirmed", the email was sent. Check the customer's spam folder. |
+| An error appears in n8n | Take a screenshot and send it to Romain |
+| Stock shows zero but products are available | Ask Delphine to update the Stock tab |
 
 ---
 
-## Ce que vous gagnez
+## What you gain
 
-- **~30 min/jour** récupérées sur le copier-coller et les confirmations manuelles
-- **Zéro oubli** de confirmation : chaque commande reçoit une réponse automatique
-- **Alertes de rupture avant que le client soit déçu** : vous êtes averti en temps réel
+- **~30 min/day** recovered from manual copy-paste and confirmations
+- **Zero missed confirmations**: every order receives an automatic reply
+- **Out-of-stock alerts before the customer is disappointed**: you're notified in real time
 
-Sur un an, c'est environ **130 heures** que vous pouvez consacrer à développer votre boutique plutôt qu'à de l'administratif.
+Over a year, that's roughly **130 hours** you can put toward growing your shop instead of admin work.
 
 ---
 
-*Document généré par Talk2Flow — pipeline PME Order Management, mai 2026.*
+*Document generated by Talk2Flow — PME Order Management pipeline, May 2026.*

@@ -1,23 +1,23 @@
 # Deployer Handoff — La Boîte Artisanale Order Workflow
 
-**Project**: Email order automation for La Boîte Artisanale  
-**Client contact**: Marc Dupont — marc@laboiteartisanale.fr  
-**Workflow file**: `n8n-workflow.json` (this folder)  
-**Estimated setup time**: 4–6 hours  
-**Client budget for setup**: ~300 € (5h × 60 €/h)
+**Project**: Email order automation for La Boîte Artisanale
+**Client contact**: Marc Dupont — marc@laboiteartisanale.fr
+**Workflow file**: `n8n-workflow.json` (this folder)
+**Estimated setup time**: 4–6 hours
+**Client budget for setup**: ~€300 (5h × €60/h)
 
 ---
 
 ## What you're deploying
 
 A 12-node n8n workflow that:
-1. Polls Gmail every 5 minutes for emails containing "commande" in the subject
-2. Extracts order fields (name, product, qty, address) from free-text French email bodies using a JavaScript Code node
+1. Polls Gmail every 5 minutes for emails containing "order" in the subject
+2. Extracts order fields (name, product, qty, address) from free-text email bodies using a JavaScript Code node
 3. Checks stock levels in a Google Sheet tab
 4. Routes to one of three branches: ✅ confirm, ⚠️ stock alert, 📬 request missing address
-5. Appends every order to a Google Sheet with appropriate status
+5. Appends every order to a Google Sheet with the appropriate status
 
-**Stack**: n8n + Gmail OAuth2 + Google Sheets OAuth2  
+**Stack**: n8n + Gmail OAuth2 + Google Sheets OAuth2
 **No external APIs. No webhooks. No database.**
 
 ---
@@ -28,10 +28,10 @@ Two options — confirm with Marc before starting:
 
 | Option | Cost | Maintenance | Uptime |
 |---|---|---|---|
-| **n8n Cloud Starter** (recommended) | ~20 €/mth | Zero infrastructure work | 99.9% SLA |
-| **Self-hosted on VPS (OVH VPS Starter)** | ~6 €/mth (VPS) | You or Marc maintains the server | Your responsibility |
+| **n8n Cloud Starter** (recommended) | ~€20/mth | Zero infrastructure work | 99.9% SLA |
+| **Self-hosted on VPS (OVH VPS Starter)** | ~€6/mth (VPS) | You or Marc maintains the server | Your responsibility |
 
-**Recommendation**: n8n Cloud. Marc is non-technical, and the 14 €/month difference is not worth the ops overhead for a 5-person shop. If he insists on self-hosting, use Docker on an OVH VPS (1 vCPU, 2 GB RAM is sufficient).
+**Recommendation**: n8n Cloud. Marc is non-technical, and the €14/month difference is not worth the ops overhead for a 5-person shop. If he insists on self-hosting, use Docker on an OVH VPS (1 vCPU, 2 GB RAM is sufficient).
 
 ---
 
@@ -39,8 +39,8 @@ Two options — confirm with Marc before starting:
 
 ### 1. Create n8n account / instance
 
-**Cloud**: Sign up at https://n8n.io → Starter plan  
-**Self-hosted**: 
+**Cloud**: Sign up at https://n8n.io → Starter plan
+**Self-hosted**:
 ```
 docker run -d --name n8n -p 5678:5678 \
   -v n8n_data:/home/node/.n8n \
@@ -53,7 +53,7 @@ docker run -d --name n8n -p 5678:5678 \
 - In n8n: Settings → Credentials → New → Gmail OAuth2
 - Use Marc's Google account (marc@laboiteartisanale.fr)
 - Required scopes: `https://mail.google.com/` (covers read + send)
-- Marc will need to authorize via Google OAuth consent screen — do this together
+- Marc will need to authorise via Google OAuth consent screen — do this together
 - Note the credential ID after creation
 
 **Google Sheets OAuth2** (used by 4 nodes):
@@ -64,22 +64,22 @@ docker run -d --name n8n -p 5678:5678 \
 
 ### 3. Locate Marc's Google Sheet ID
 
-Open Marc's Google Sheet (the one with "Commandes" and "Stocks" tabs).  
-The URL looks like: `https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit`  
+Open Marc's Google Sheet (the one with "Orders" and "Stock" tabs).
+The URL looks like: `https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit`
 Copy the `SHEET_ID_HERE` part.
 
 ### 4. Verify Google Sheet structure
 
 The workflow expects these exact column headers:
 
-**Tab "Commandes"**:
+**Tab "Orders"**:
 ```
-Date | Numéro | Nom client | Email | Produit | Quantité | Adresse | Statut | Source
+Date | Number | Customer Name | Email | Product | Quantity | Address | Status | Source
 ```
 
-**Tab "Stocks"**:
+**Tab "Stock"**:
 ```
-Produit | Stock_disponible | [other columns — ignored]
+Product | Stock_available | [other columns — ignored]
 ```
 
 If the columns don't match, either rename them in the sheet or update the `columns.value` mappings in the Google Sheets nodes.
@@ -93,15 +93,15 @@ If the columns don't match, either rename them in the sheet or update the `colum
    - Select each Google Sheets node → Credentials → select "Google Sheets — La Boîte Artisanale"
 4. Replace `REPLACE_WITH_GOOGLE_SHEET_ID` in each Google Sheets node with the actual Sheet ID
 
-Nodes to update (6 total):
-- `Gmail — Nouvelles commandes` → Gmail credential
-- `Gmail — Demande adresse` → Gmail credential
-- `Gmail — Alerte rupture` → Gmail credential
-- `Gmail — Confirmation commande` → Gmail credential
-- `Sheets — En attente adresse` → Sheets credential + Sheet ID
-- `Sheets — Vérifier stock` → Sheets credential + Sheet ID
-- `Sheets — Rupture stock` → Sheets credential + Sheet ID
-- `Sheets — Enregistrer commande` → Sheets credential + Sheet ID
+Nodes to update (8 total):
+- `Gmail — New Orders` → Gmail credential
+- `Gmail — Request Address` → Gmail credential
+- `Gmail — Stock Alert` → Gmail credential
+- `Gmail — Order Confirmation` → Gmail credential
+- `Sheets — Awaiting Address` → Sheets credential + Sheet ID
+- `Sheets — Check Stock` → Sheets credential + Sheet ID
+- `Sheets — Out of Stock` → Sheets credential + Sheet ID
+- `Sheets — Save Order` → Sheets credential + Sheet ID
 
 ### 6. Test on real emails
 
@@ -112,16 +112,16 @@ Collect 5–10 real past emails from Marc's Gmail that are actual orders. Run th
 Check for each test run:
 - [ ] Fields extracted correctly (name, product, qty, address)
 - [ ] Stock lookup returns a row (not empty)
-- [ ] IF branch routes correctly (address present/absent, stock ok/rupture)
+- [ ] IF branch routes correctly (address present/absent, stock ok/out of stock)
 - [ ] Google Sheet row appended with correct data
-- [ ] Confirmation email text looks right (check {{variables}} resolved)
+- [ ] Confirmation email text looks right (check `{{variables}}` resolved)
 - [ ] No node shows a red error badge
 
 **Common issues to anticipate**:
 
-1. **Product name doesn't match sheet**: The Code node extracts a fuzzy product name from free text. The Sheets lookup uses "contains" — this usually works, but if Marc has product names like "Confiture de Fraises 370g", the email might say "confitures de fraises" (no size, plural). Test this case explicitly and adjust the `keyValue` expression if needed.
+1. **Product name doesn't match sheet**: The Code node extracts a fuzzy product name from free text. The Sheets lookup uses "contains" — this usually works, but if Marc has product names like "Strawberry Jam 370g", the email might say "strawberry jam" (no size). Test this case explicitly and adjust the `keyValue` expression if needed.
 
-2. **Gmail trigger misses some orders**: Emails with subject "Bonjour, je voudrais..." won't be caught by the filter. Check with Marc which missed-order emails exist and consider adding more keywords to the Gmail filter (`q` parameter in the trigger node).
+2. **Gmail trigger misses some orders**: Emails with subject "Hello, I was wondering…" won't be caught by the filter. Check with Marc which missed-order emails exist and consider adding more keywords to the Gmail filter (`q` parameter in the trigger node).
 
 3. **Code node extraction fails on unusual email formats**: The regex patterns cover ~70% of cases per Marc's estimate. For the rest, the workflow degrades gracefully (null fields → manual review). This is acceptable for V1.
 
@@ -179,7 +179,7 @@ For V1, unhandled errors will surface in the n8n execution log. Marc will check 
 Before handing over:
 
 - [ ] Gmail OAuth2 credential created and tested
-- [ ] Google Sheets OAuth2 credential created and tested  
+- [ ] Google Sheets OAuth2 credential created and tested
 - [ ] Marc has access to the n8n instance (login + URL documented)
 - [ ] Marc's Google Sheet ID recorded in a shared document
 - [ ] All `REPLACE_WITH_CREDENTIAL_ID` placeholders replaced
@@ -190,5 +190,5 @@ Before handing over:
 
 ---
 
-*Document generated by Talk2Flow — pipeline PME Order Management, May 2026.*  
+*Document generated by Talk2Flow — PME Order Management pipeline, May 2026.*
 *Source: `automation-spec.json` + `stack-profile.json`*

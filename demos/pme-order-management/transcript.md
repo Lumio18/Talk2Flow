@@ -1,87 +1,87 @@
-# Transcription — Entretien Marc Dupont, fondateur de La Boîte Artisanale
+# Transcript — Interview with Marc Dupont, founder of La Boîte Artisanale
 
-**Date** : 14 mai 2026  
-**Durée** : 38 minutes  
-**Contexte** : Marc gère une boutique en ligne de produits artisanaux (confitures, miels, savons) créée il y a 3 ans. 5 personnes dans l'équipe. L'entretien a lieu en fin de matinée, entre deux envois.
-
----
-
-**Opérateur** : Bonjour Marc, merci de prendre le temps. Pour commencer, décrivez-moi votre journée type — qu'est-ce que vous faites en premier le matin ?
-
-**Marc** : Bonjour ! Alors, le matin… je commence toujours par les mails. Je me connecte à Gmail vers 8h et il y a en général entre 10 et 25 nouveaux messages depuis la veille. Les commandes, les relances fournisseurs, les questions clients — tout arrive au même endroit. Je commence par trier ce qui est une commande et ce qui ne l'est pas.
-
-**Opérateur** : Comment vous savez qu'un mail est une commande ?
-
-**Marc** : La plupart du temps c'est l'objet du mail — les clients mettent "Commande" ou "Commander" ou "Je voudrais commander…". Mais pas toujours. Parfois c'est "Bonjour, je souhaite…" et ça commence par une question sur les stocks. Alors je dois lire pour comprendre. Sur 20 mails le matin, en gros 8 à 12 sont des commandes réelles.
-
-**Opérateur** : Et quand vous identifiez une commande, que se passe-t-il ?
-
-**Marc** : Je lis le mail en entier, je note mentalement ce qu'ils veulent — la référence produit, la quantité, l'adresse de livraison si ils l'ont donnée. Ensuite j'ouvre mon Google Sheet et je copie-colle. J'ai un tableau avec les colonnes : date, nom, email, produit, quantité, adresse, statut. Ça prend… [soupir] deux, trois minutes par commande si tout est bien rédigé. Parfois dix minutes si le client a mis les infos dans le mauvais ordre ou pas donné l'adresse.
-
-**Opérateur** : Ce tableau, c'est votre seul outil de suivi ?
-
-**Marc** : Pour les commandes oui. J'ai pas de logiciel de gestion. Mon site tourne sur PrestaShop mais les commandes en ligne arrivent directement sur PrestaShop — celles-là c'est automatique, elles sont déjà dans le système. Le problème c'est que j'ai aussi des commandes par mail, par téléphone, parfois par SMS. Celles-là PrestaShop ne les voit pas. Donc j'ai mon Google Sheet à côté.
-
-**Opérateur** : Donc il y a deux flux de commandes — PrestaShop et les mails ?
-
-**Marc** : Exactement. Et les mails, c'est là où je perds du temps. Les commandes PrestaShop je m'en occupe plus vraiment, c'est Julien qui gère ça côté préparation. Les commandes mail, c'est moi tout seul.
-
-**Opérateur** : Après avoir copié dans le tableau, qu'est-ce que vous faites ?
-
-**Marc** : J'envoie un mail de confirmation au client. J'ai un brouillon que je réutilise — je change le prénom, le produit, le montant, l'adresse. "Bonjour [prénom], votre commande de [produit] a bien été enregistrée, voici le récapitulatif…". Ça prend encore deux minutes. Avec le délai de livraison estimé, le numéro de commande que j'invente un peu au feeling — je regarde le dernier numéro dans le tableau et j'incrémente.
-
-**Opérateur** : Ça vous arrive d'oublier d'envoyer la confirmation ?
-
-**Marc** : [rires] Oui, rarement mais ça arrive. En général c'est quand je suis interrompu entre les deux étapes. Je sais que j'ai copié dans le tableau mais la confirmation est pas partie. Et le client relance le lendemain — "j'ai pas eu de confirmation" — et là je dois retrouver où j'en suis.
-
-**Opérateur** : Et les stocks ? Vous vérifiez que le produit est disponible avant d'envoyer la confirmation ?
-
-**Marc** : Normalement oui. J'ai un onglet "Stocks" dans le même Google Sheet. Mais… [pause] c'est pas toujours à jour. Delphine met à jour les stocks en fin de journée quand elle a fini la production. Donc le matin, si je regarde les stocks, c'est les stocks d'hier soir. Si quelqu'un a commandé à 23h et moi à 8h, c'est juste. Mais si on a fait une grosse expédition la veille et Delphine a pas eu le temps de mettre à jour…
-
-**Opérateur** : Ce qui arrive ?
-
-**Marc** : Ce qui arrive, oui. Et là c'est le problème. J'envoie la confirmation, le client est content, et deux jours plus tard Julien me dit "Marc, on a plus de Miel de Provence 250g, y a une commande qui peut pas partir." Et là je dois rappeler le client, m'excuser, soit proposer un délai soit rembourser. C'est une catastrophe côté relation client.
-
-**Opérateur** : C'est arrivé souvent ?
-
-**Marc** : Deux, trois fois par mois. C'est pas énorme mais à chaque fois c'est une demi-heure de gestion de crise. Et le client, il revient rarement après ça.
-
-**Opérateur** : On parlait de votre matinée — après les commandes, c'est quoi la suite ?
-
-**Marc** : Après les commandes, je traite les autres mails — questions clients, demandes de devis pour les professionnels, les relances. Ça prend encore 30 à 45 minutes. Puis je rejoins l'équipe pour le point du jour. L'après-midi c'est plus la gestion de la boutique, les fournisseurs, les réseaux sociaux.
-
-**Opérateur** : Vous avez mentionné les factures — comment ça se passe ?
-
-**Marc** : Les factures je les fais le vendredi. Je prends toutes les commandes de la semaine dans mon tableau, je crée les factures une par une dans un modèle Word. Ensuite je les envoie par mail. Ça prend… facilement deux heures le vendredi après-midi. C'est long, c'est répétitif, et quand j'ai fait une erreur — un mauvais montant, une mauvaise adresse — il faut faire un avoir, une facture rectificative. Bref.
-
-**Opérateur** : Vous avez un logiciel de facturation ?
-
-**Marc** : Non. Juste mon modèle Word et un tableau Excel pour numéroter. J'ai regardé des logiciels comme Pennylane ou Fresha mais j'ai pas pris le temps de m'y mettre.
-
-**Opérateur** : Si vous deviez estimer le temps total que vous passez sur ce processus de commandes chaque jour — copie dans le tableau, confirmations, gestion des ruptures — ça représente combien ?
-
-**Marc** : [réfléchit] Le matin, entre le tri des mails, la copie dans le tableau et les confirmations… facilement une heure. Parfois une heure et demie si y a beaucoup de commandes ou des cas compliqués. Le vendredi les factures c'est deux heures de plus. Sur la semaine, j'estime que je passe entre 7 et 9 heures sur ce genre de tâches administratives. C'est presque deux jours de travail par semaine.
-
-**Opérateur** : Et si vous deviez garder la main sur quoi absolument ?
-
-**Marc** : Les cas litigieux — un client mécontent, une commande floue, les professionnels qui veulent des devis particuliers. Ça je veux rester impliqué. Le reste — copier-coller des infos d'un mail dans un tableau et envoyer un mail automatique — franchement, si une machine peut le faire, ça me soulagerait énormément.
-
-**Opérateur** : Votre budget pour automatiser, vous avez une idée ?
-
-**Marc** : Je suis une petite structure, je peux pas me permettre des trucs à 500 euros par mois. Si c'est 30, 50 euros par mois et que ça me fait gagner une heure par jour, c'est vite rentabilisé. Au-delà de 100 euros par mois il faudrait vraiment me convaincre.
-
-**Opérateur** : Et techniquement, vous êtes à l'aise ? Vous avez quelqu'un pour vous aider à installer un outil ?
-
-**Marc** : Moi je suis pas développeur, mais j'ai travaillé quelques fois avec un freelance — Romain — qui m'a aidé à configurer PrestaShop. Je pense qu'il peut m'aider à installer et configurer quelque chose. Pour l'entretien courant je voudrais que ce soit quelque chose que je peux gérer moi-même. Pas réécrire du code, mais changer un modèle d'email ou ajouter un produit dans une règle, ça je peux le faire.
-
-**Opérateur** : Vos données sont sensibles ? Des données personnelles sur lesquelles vous avez des obligations particulières ?
-
-**Marc** : Les noms, adresses, emails des clients — oui, c'est des données personnelles. J'ai les mentions RGPD sur le site. Mais je suis pas dans le médical, la finance — c'est une boutique de confitures. Je pense que les outils cloud standard ça pose pas de problème.
-
-**Opérateur** : Dernière question — si l'automatisation marchait parfaitement, à quoi ressemblerait votre matinée dans six mois ?
-
-**Marc** : Je me connecte, je vois que 15 commandes ont été traitées automatiquement cette nuit. Il y en a 2 qui ont été marquées "à valider" parce qu'il y avait un problème — une rupture, une adresse incomplète. Je passe 10 minutes à les traiter moi-même. Et je passe le reste de ma matinée à développer le business au lieu de faire du copier-coller. Ce serait… vraiment bien.
+**Date**: 14 May 2026
+**Duration**: 38 minutes
+**Context**: Marc runs an online artisanal goods shop (jams, honeys, soaps) he founded 3 years ago. 5-person team. The interview takes place late morning, between two shipment runs.
 
 ---
 
-*Fin de l'entretien. Durée totale : 38 minutes.*
+**Operator**: Hi Marc, thanks for taking the time. To start, walk me through your typical day — what's the first thing you do in the morning?
+
+**Marc**: Morning! So… I always start with emails. I log into Gmail around 8am and there are usually between 10 and 25 new messages since the evening. Orders, supplier follow-ups, customer questions — everything lands in the same place. I start by sorting out what's an order and what isn't.
+
+**Operator**: How do you know an email is an order?
+
+**Marc**: Most of the time it's the subject line — customers put "Order" or "I'd like to order…". But not always. Sometimes it's "Hello, I was wondering…" and it turns out to be a stock question. So I have to read to understand. Out of 20 emails in the morning, roughly 8 to 12 are actual orders.
+
+**Operator**: And when you identify an order, what happens?
+
+**Marc**: I read the whole email, mentally note what they want — the product reference, the quantity, the delivery address if they've included it. Then I open my Google Sheet and copy-paste. I have a table with columns: date, name, email, product, quantity, address, status. It takes… [sigh] two, three minutes per order if everything is well written. Sometimes ten minutes if the customer put the information in the wrong order or didn't give an address.
+
+**Operator**: That table — is it your only tracking tool?
+
+**Marc**: For orders, yes. I don't have any management software. My website runs on PrestaShop but online orders go directly into PrestaShop — those are automatic, already in the system. The problem is I also get orders by email, phone, sometimes by text message. Those PrestaShop doesn't see. So I have my Google Sheet alongside it.
+
+**Operator**: So there are two order flows — PrestaShop and emails?
+
+**Marc**: Exactly. And emails are where I lose time. PrestaShop orders I don't really deal with anymore, that's Julien on the fulfilment side. Email orders, that's me on my own.
+
+**Operator**: After copying into the table, what do you do?
+
+**Marc**: I send a confirmation email to the customer. I have a draft I reuse — I change the first name, the product, the amount, the address. "Hello [name], your order for [product] has been received, here's the summary…". That takes another two minutes. With the estimated delivery time, the order number I kind of make up — I look at the last number in the table and increment it.
+
+**Operator**: Does it happen that you forget to send the confirmation?
+
+**Marc**: [laughs] Yes, rarely but it happens. Usually when I'm interrupted between the two steps. I know I copied into the table but the confirmation didn't go out. And the customer follows up the next day — "I haven't received a confirmation" — and then I have to track down where I left off.
+
+**Operator**: And stock? Do you check that the product is available before sending the confirmation?
+
+**Marc**: Normally yes. I have a "Stock" tab in the same Google Sheet. But… [pause] it's not always up to date. Delphine updates the stock at the end of the day when she's finished production. So in the morning, if I check stock, it's last night's figures. If someone ordered at 11pm and I check at 8am, it's fine. But if we had a big dispatch the day before and Delphine didn't have time to update…
+
+**Operator**: Which happens?
+
+**Marc**: Which happens, yes. And then it's a problem. I send the confirmation, the customer is happy, and two days later Julien tells me "Marc, we're out of Provence Honey 250g, there's an order that can't ship." And then I have to call the customer, apologise, either offer a delay or a refund. It's a disaster for the customer relationship.
+
+**Operator**: How often does that happen?
+
+**Marc**: Two, three times a month. It's not huge but every time it's half an hour of crisis management. And the customer rarely comes back after that.
+
+**Operator**: We were talking about your morning — after orders, what comes next?
+
+**Marc**: After orders, I handle the other emails — customer questions, professional quote requests, follow-ups. That takes another 30 to 45 minutes. Then I join the team for the daily stand-up. The afternoon is more shop management, suppliers, social media.
+
+**Operator**: You mentioned invoices — how does that work?
+
+**Marc**: I do invoices on Fridays. I take all the week's orders from my table, create invoices one by one from a Word template. Then I email them. That takes… easily two hours on Friday afternoon. It's long, repetitive, and when I make a mistake — wrong amount, wrong address — I have to do a credit note, a corrected invoice. Anyway.
+
+**Operator**: Do you use invoicing software?
+
+**Marc**: No. Just my Word template and an Excel table for numbering. I looked at software like Pennylane or Fresha but I never got around to setting it up.
+
+**Operator**: If you had to estimate the total time you spend on this order process each day — copying into the table, confirmations, handling stock issues — how much is that?
+
+**Marc**: [thinks] In the morning, between sorting emails, copying into the table and confirmations… easily an hour. Sometimes an hour and a half if there are lots of orders or complicated cases. Fridays add two more hours for invoices. Over the week, I estimate I spend between 7 and 9 hours on this kind of admin work. That's almost two full working days a week.
+
+**Operator**: And if you had to keep your hand in on something, what would it be?
+
+**Marc**: Disputes — an unhappy customer, an unclear order, professionals wanting custom quotes. Those I want to stay involved in. The rest — copy-pasting info from an email into a table and sending an automatic email — honestly, if a machine can do it, that would be a huge relief.
+
+**Operator**: Your budget for automation — any idea?
+
+**Marc**: I'm a small operation, I can't afford things at €500 a month. If it's €30, €50 a month and it saves me an hour a day, the return is obvious. Beyond €100 a month you'd really need to convince me.
+
+**Operator**: And technically — are you comfortable? Do you have someone to help you set things up?
+
+**Marc**: I'm not a developer, but I've worked a few times with a freelancer — Romain — who helped me set up PrestaShop. I think he can help me install and configure something. For day-to-day maintenance I'd want something I can manage myself. Not write code, but change an email template or add a product to a rule — that I can do.
+
+**Operator**: Is your data sensitive? Personal data with particular obligations?
+
+**Marc**: Customer names, addresses, emails — yes, that's personal data. I have GDPR mentions on the site. But I'm not in healthcare or finance — it's a jam shop. I think standard cloud tools aren't a problem.
+
+**Operator**: Last question — if automation was working perfectly, what would your morning look like in six months?
+
+**Marc**: I log in, I see that 15 orders were processed automatically overnight. Two of them are flagged "to review" because there was a problem — a stock issue, an incomplete address. I spend 10 minutes handling those myself. And I spend the rest of my morning growing the business instead of doing copy-paste. That would be… really great.
+
+---
+
+*End of interview. Total duration: 38 minutes.*

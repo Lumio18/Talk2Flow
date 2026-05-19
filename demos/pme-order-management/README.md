@@ -1,101 +1,101 @@
 # Demo: PME Order Management
 
-> **La Boîte Artisanale** — Automatisation de la prise de commande email  
-> Status: **référence** — tous les artefacts sont présents et finalisés.
+> **La Boîte Artisanale** — Email order processing automation
+> Status: **reference** — all artifacts are present and finalised.
 
 ---
 
-## Le scénario
+## The scenario
 
-Marc Dupont est fondateur d'une boutique en ligne de produits artisanaux (confitures, miels, savons). Son équipe de 5 personnes gère 8 à 12 commandes email par jour, entièrement à la main.
+Marc Dupont is the founder of an online artisanal goods shop (jams, honeys, soaps). His 5-person team processes 8 to 12 email orders per day entirely by hand.
 
-**Avant l'automatisation** : chaque matin, Marc passe 1h à trier ses mails, copier les infos dans un Google Sheet, envoyer des confirmations — et parfois découvrir trop tard qu'un produit est en rupture.
+**Before automation**: every morning Marc spends 1 hour sorting emails, copying information into a Google Sheet, and sending confirmation emails — sometimes discovering too late that a product is out of stock.
 
-**Après** : le workflow traite les commandes standard automatiquement. Marc reçoit une alerte uniquement pour les cas qui nécessitent son jugement (rupture de stock, adresse manquante, email ambigu).
-
----
-
-## Pourquoi ce scénario
-
-- **Universel** : toute personne qui a déjà géré des commandes par email comprend immédiatement la douleur
-- **Visuel** : le workflow n8n final est partageable sur LinkedIn et les réseaux — 12 nœuds, logique claire
-- **Complet** : exerce les 6 phases du pipeline sans forcer
-- **Réaliste** : budget contraint (50 €/mois max), fondateur non-technique, deployer freelance
+**After**: the workflow processes standard orders automatically. Marc only receives an alert for cases that require his judgement (out of stock, missing address, ambiguous email).
 
 ---
 
-## Artefacts
+## Why this scenario
 
-| Fichier | Étape Talk2Flow | Description |
+- **Universal**: anyone who has ever handled orders by email immediately understands the pain
+- **Visual**: the final n8n workflow is shareable on LinkedIn and social media — 12 nodes, clear logic
+- **Complete**: exercises all 6 pipeline phases without forcing it
+- **Realistic**: constrained budget (max €50/month), non-technical founder, freelance deployer
+
+---
+
+## Artifacts
+
+| File | Talk2Flow Step | Description |
 |---|---|---|
-| `transcript.md` | Input | Interview de Marc (38 min, 3 300 mots, français) |
-| `gap-questions.md` | Phase 1 | 8 questions ciblées + réponses de Marc |
-| `process-inventory.json` | process-extractor | 5 processus, 5 pain points, 2 pipeline breaks |
-| `opportunities.json` | process-challenger | 4 opportunités, matrice effort/impact, ROI détaillé |
-| `stack-profile.json` | stack-profiler | Gmail, Google Sheets, PrestaShop, budget 50 €/mois |
-| `automation-spec.json` | automation-architect | Spec OPP01+OPP02+OPP04, 7 étapes, 3 templates email |
-| `n8n-workflow.json` | n8n-builder | Workflow importable, 12 nœuds, prêt à configurer |
-| `end-user-doc.md` | n8n-builder | Guide Marc : ce qui est automatisé, quand intervenir |
-| `deployer-doc.md` | n8n-builder | Guide Romain : setup complet, tests, maintenance |
+| `transcript.md` | Input | Interview with Marc (38 min, ~3,300 words, English) |
+| `gap-questions.md` | Phase 1 | 8 targeted questions + Marc's answers |
+| `process-inventory.json` | process-extractor | 5 processes, 5 pain points, 2 pipeline breaks |
+| `opportunities.json` | process-challenger | 4 opportunities, effort/impact matrix, detailed ROI |
+| `stack-profile.json` | stack-profiler | Gmail, Google Sheets, PrestaShop, budget €50/month |
+| `automation-spec.json` | automation-architect | Spec OPP01+OPP02+OPP04, 7 steps, 3 email templates |
+| `n8n-workflow.json` | n8n-builder | Importable workflow, 12 nodes, ready to configure |
+| `end-user-doc.md` | n8n-builder | Marc's guide: what is automated, when to intervene |
+| `deployer-doc.md` | n8n-builder | Romain's guide: full setup, testing, maintenance |
 
 ---
 
-## Résultats du pipeline
+## Pipeline results
 
-### Processus identifiés (5)
+### Identified processes (5)
 
-| ID | Processus | Fréquence | Durée | Acteur |
+| ID | Process | Frequency | Duration | Actor |
 |---|---|---|---|---|
-| P01 | Tri et qualification des emails | Quotidienne | 15 min | Marc |
-| P02 | Enregistrement d'une commande | 10×/jour | 3 min | Marc |
-| P03 | Envoi de la confirmation | 10×/jour | 2 min | Marc |
-| P04 | Gestion des ruptures de stock | 2-3×/mois | 45 min | Marc + Julien |
-| P05 | Facturation hebdomadaire | 1×/semaine | 120 min | Marc |
+| P01 | Email triage and qualification | Daily | 15 min | Marc |
+| P02 | Order entry | 10×/day | 3 min | Marc |
+| P03 | Confirmation email | 10×/day | 2 min | Marc |
+| P04 | Out-of-stock management | 2–3×/month | 45 min | Marc + Julien |
+| P05 | Weekly invoicing | 1×/week | 120 min | Marc |
 
-### Opportunités d'automatisation (4)
+### Automation opportunities (4)
 
-| ID | Opportunité | Quadrant | ROI annuel net | Confiance |
+| ID | Opportunity | Quadrant | Net annual ROI | Confidence |
 |---|---|---|---|---|
-| **OPP01** | Prise de commande automatique | Quick win | 5 800 € | Moyen |
-| **OPP02** | Alerte rupture pre-confirmation | Quick win | 1 350 € | Élevé |
-| **OPP03** | Facturation hebdomadaire auto | Major project | 3 760 € | Moyen |
-| **OPP04** | Relance adresse manquante | Fill-in | 1 250 € | Moyen |
+| **OPP01** | Automatic order processing | Quick win | €5,800 | Medium |
+| **OPP02** | Pre-confirmation stock alert | Quick win | €1,350 | High |
+| **OPP03** | Automated weekly invoicing | Major project | €3,760 | Medium |
+| **OPP04** | Missing address follow-up | Fill-in | €1,250 | Medium |
 
-**Phase 1 (OPP01+02+04) : 7 900 € net la première année. Retour sur investissement en 3 semaines.**
+**Phase 1 (OPP01+02+04): €7,900 net in year one. Return on investment in 3 weeks.**
 
-### Pipeline breaks détectés
+### Pipeline breaks detected
 
-| ID | Problème | Sévérité | Recommandation |
+| ID | Issue | Severity | Recommendation |
 |---|---|---|---|
-| BREAK01 | Stocks mis à jour J-1 → confirmations envoyées sur données stables | Élevée | Marquer commandes "À valider stock" en attendant que Delphine mette à jour |
-| BREAK02 | Numéros de commande incrémentés manuellement | Moyenne | Préfixe ML-YYYY-NNN pour différencier des commandes PrestaShop |
+| BREAK01 | Stock updated end-of-day by Delphine → confirmations sent against stale data | High | Mark orders "Pending stock check" until Delphine updates |
+| BREAK02 | Order numbers incremented manually | Medium | Use prefix ML-YYYY-NNN to distinguish from PrestaShop orders |
 
 ---
 
-## Rôles dans ce scénario
+## Roles in this scenario
 
-| Rôle | Personne | Note |
+| Role | Person | Note |
 |---|---|---|
-| **End user** | Marc Dupont (fondateur) | S'auto-interviewe — mode Operator = self |
-| **Operator** | Marc (pour la démo) | L'operator est Marc lui-même |
-| **Deployer** | Romain (freelance) | Configure n8n, 4-6h de travail, ~300 € |
+| **End user** | Marc Dupont (founder) | Self-interviews — Operator = self |
+| **Operator** | Marc (for the demo) | The operator is Marc himself |
+| **Deployer** | Romain (freelance) | Configures n8n, 4–6h of work, ~€300 |
 
 ---
 
-## Déploiement
+## Deployment
 
-**Builder recommandé** : n8n (pas d'entreprise, pas de données sensibles réglementées, budget compatible, Romain sait l'installer)
+**Recommended builder**: n8n (no enterprise context, no regulated sensitive data, budget-compatible, Romain knows how to install it)
 
-**Aucune validation `enterprise_deployment_required`** — la gate a été vérifiée et les 5 signaux sont absents.
+**No `enterprise_deployment_required` flag** — the gate was checked and all 5 signals are absent.
 
-**Instructions de déploiement** : voir `deployer-doc.md`
+**Deployment instructions**: see `deployer-doc.md`
 
 ---
 
-## Comment reproduire ce scénario avec Talk2Flow
+## How to reproduce this scenario with Talk2Flow
 
-1. Ouvrez une conversation Claude avec le skill Talk2Flow chargé
-2. Collez le contenu de `transcript.md`
-3. Talk2Flow détecte les lacunes et vous pose les questions de `gap-questions.md`
-4. Répondez avec les réponses de Marc
-5. Le pipeline génère les mêmes artefacts (avec des variations mineures selon le modèle)
+1. Open a Claude conversation with the Talk2Flow skill loaded
+2. Paste the content of `transcript.md`
+3. Talk2Flow detects gaps and asks you the questions from `gap-questions.md`
+4. Answer with Marc's responses
+5. The pipeline generates the same artifacts (with minor variations depending on the model)

@@ -1,19 +1,19 @@
 {
   "spec_version": "1.0",
   "spec_date": "2026-05-14",
-  "language": "fr",
+  "language": "en",
   "company": "La Boîte Artisanale",
   "opportunity_id": "OPP01+OPP02+OPP04",
-  "opportunity_name": "Automatisation de la prise de commande email avec vérification de stock",
+  "opportunity_name": "Automated email order processing with stock verification",
 
-  "objective": "Détecter automatiquement les emails de commande dans Gmail, extraire les informations clés, vérifier les stocks, enregistrer dans Google Sheets, envoyer la confirmation au client (ou une alerte si rupture ou adresse manquante) — sans intervention humaine pour les cas standard.",
+  "objective": "Automatically detect order emails in Gmail, extract key information, check stock, log in Google Sheets, send confirmation to the customer (or an alert if out of stock or address missing) — without human intervention for standard cases.",
 
   "trigger": {
     "type": "email_received",
     "system": "Gmail",
-    "filter": "Objet contient 'commande' OU 'commander' OU 'order' (insensible à la casse)",
+    "filter": "Subject contains 'order' OR 'ordering' (case-insensitive)",
     "polling_interval_minutes": 5,
-    "note": "Les emails ne correspondant pas au filtre ne déclenchent pas le workflow."
+    "note": "Emails that do not match the filter do not trigger the workflow."
   },
 
   "inputs": [
@@ -26,104 +26,104 @@
   "steps": [
     {
       "step_id": "S01",
-      "name": "Extraire les champs de la commande",
+      "name": "Extract order fields",
       "type": "data_extraction",
-      "implementation": "Code JavaScript (LLM-assisted parsing ou regex structuré)",
-      "logic": "Parser le corps du mail pour extraire : nom_client, email_client, produit(s) commandé(s), quantité(s), adresse_livraison. Valeurs manquantes → null.",
+      "implementation": "JavaScript Code node (LLM-assisted parsing or structured regex)",
+      "logic": "Parse the email body to extract: customer_name, customer_email, product(s) ordered, quantity/quantities, shipping_address. Missing values → null.",
       "outputs": {
-        "nom_client": "string | null",
-        "email_client": "string",
-        "produits": "[{nom: string, quantite: number}]",
-        "adresse_livraison": "string | null"
+        "customer_name": "string | null",
+        "customer_email": "string",
+        "products": "[{name: string, quantity: number}]",
+        "shipping_address": "string | null"
       },
       "human_checkpoint": false
     },
     {
       "step_id": "S02",
-      "name": "Vérifier si l'adresse est présente",
+      "name": "Check if address is present",
       "type": "conditional",
-      "logic": "IF adresse_livraison == null → branche 'adresse manquante'. ELSE → continuer vers S03.",
+      "logic": "IF shipping_address == null → branch 'missing address'. ELSE → continue to S03.",
       "branches": {
-        "adresse_manquante": "S02b",
-        "adresse_presente": "S03"
+        "missing_address": "S02b",
+        "address_present": "S03"
       }
     },
     {
       "step_id": "S02b",
-      "name": "Envoyer une demande d'adresse au client",
+      "name": "Send address request to customer",
       "type": "send_email",
       "system": "Gmail",
       "template": "email-address-request",
-      "then": "Enregistrer commande dans Google Sheets avec statut='En attente adresse'. FIN du workflow pour cette commande.",
+      "then": "Log order in Google Sheets with status='Awaiting address'. END of workflow for this order.",
       "human_checkpoint": false
     },
     {
       "step_id": "S03",
-      "name": "Vérifier le stock du produit",
+      "name": "Check product stock",
       "type": "read_data",
       "system": "Google Sheets",
-      "sheet": "Stocks",
-      "lookup": "Chercher la ligne où colonne 'Produit' = nom_produit. Lire colonne 'Stock_disponible'.",
+      "sheet": "Stock",
+      "lookup": "Find the row where column 'Product' = product_name. Read column 'Stock_available'.",
       "outputs": {
-        "stock_disponible": "number | null"
+        "stock_available": "number | null"
       },
-      "note": "Si plusieurs produits commandés, vérifier le stock de chacun. Si l'un est en rupture, traiter l'ensemble comme rupture."
+      "note": "If multiple products ordered, check stock for each. If any one is out of stock, treat the whole order as out of stock."
     },
     {
       "step_id": "S04",
-      "name": "Vérifier si stock suffisant",
+      "name": "Check if stock is sufficient",
       "type": "conditional",
-      "logic": "IF stock_disponible == null OR stock_disponible < quantite_commandee → branche 'rupture'. ELSE → continuer vers S05.",
+      "logic": "IF stock_available == null OR stock_available < quantity_ordered → branch 'out of stock'. ELSE → continue to S05.",
       "branches": {
-        "rupture": "S04b",
+        "out_of_stock": "S04b",
         "stock_ok": "S05"
       }
     },
     {
       "step_id": "S04b",
-      "name": "Notifier Marc et Julien d'une rupture de stock",
+      "name": "Notify Marc and Julien of a stock outage",
       "type": "send_email",
       "system": "Gmail",
       "recipients": ["marc@laboiteartisanale.fr", "julien@laboiteartisanale.fr"],
       "template": "email-stock-alert",
-      "then": "Enregistrer commande dans Google Sheets avec statut='Rupture stock'. FIN du workflow pour cette commande.",
+      "then": "Log order in Google Sheets with status='Out of stock'. END of workflow for this order.",
       "human_checkpoint": true,
-      "human_checkpoint_note": "Marc doit contacter le client manuellement pour proposer une alternative."
+      "human_checkpoint_note": "Marc must contact the customer manually to propose an alternative."
     },
     {
       "step_id": "S05",
-      "name": "Générer le numéro de commande",
+      "name": "Generate order number",
       "type": "compute",
-      "logic": "Lire la dernière ligne de l'onglet Commandes dans Google Sheets. Extraire le dernier numéro (format ML-YYYY-NNN). Incrémenter NNN. Construire le nouveau numéro.",
-      "outputs": { "numero_commande": "string (ex: ML-2026-0042)" }
+      "logic": "Read the last row of the Orders tab in Google Sheets. Extract the last number (format ML-YYYY-NNN). Increment NNN. Build the new number.",
+      "outputs": { "order_number": "string (e.g. ML-2026-0042)" }
     },
     {
       "step_id": "S06",
-      "name": "Enregistrer la commande dans Google Sheets",
+      "name": "Log order in Google Sheets",
       "type": "write_data",
       "system": "Google Sheets",
-      "sheet": "Commandes",
+      "sheet": "Orders",
       "action": "append_row",
       "fields": [
-        "date_reception",
-        "numero_commande",
-        "nom_client",
-        "email_client",
-        "produit",
-        "quantite",
-        "adresse_livraison",
-        "statut (= 'Confirmée')",
+        "date_received",
+        "order_number",
+        "customer_name",
+        "customer_email",
+        "product",
+        "quantity",
+        "shipping_address",
+        "status (= 'Confirmed')",
         "source (= 'Email')"
       ]
     },
     {
       "step_id": "S07",
-      "name": "Envoyer la confirmation au client",
+      "name": "Send confirmation to customer",
       "type": "send_email",
       "system": "Gmail",
-      "recipient": "email_client",
+      "recipient": "customer_email",
       "template": "email-order-confirmation",
-      "variables": ["nom_client", "numero_commande", "produit", "quantite", "adresse_livraison"],
+      "variables": ["customer_name", "order_number", "product", "quantity", "shipping_address"],
       "human_checkpoint": false
     }
   ],
@@ -131,33 +131,33 @@
   "email_templates": [
     {
       "id": "email-order-confirmation",
-      "subject": "Votre commande {{numero_commande}} est confirmée — La Boîte Artisanale",
-      "body_fr": "Bonjour {{nom_client}},\n\nNous avons bien reçu votre commande et elle est enregistrée.\n\n📦 Récapitulatif :\n- Commande n° : {{numero_commande}}\n- Produit : {{produit}}\n- Quantité : {{quantite}}\n- Adresse de livraison : {{adresse_livraison}}\n\nVous recevrez votre colis dans 3 à 5 jours ouvrés.\n\nMerci pour votre confiance !\n\nMarc\nLa Boîte Artisanale"
+      "subject": "Your order {{order_number}} is confirmed — La Boîte Artisanale",
+      "body": "Hello {{customer_name}},\n\nWe have received your order and it has been logged.\n\nOrder summary:\n- Order no.: {{order_number}}\n- Product: {{product}}\n- Quantity: {{quantity}}\n- Shipping address: {{shipping_address}}\n\nYour parcel will arrive within 3 to 5 business days.\n\nThank you for your trust!\n\nMarc\nLa Boîte Artisanale"
     },
     {
       "id": "email-address-request",
-      "subject": "Votre commande — adresse de livraison manquante",
-      "body_fr": "Bonjour {{nom_client}},\n\nNous avons bien reçu votre commande pour {{produit}}.\n\nPourriez-vous nous communiquer votre adresse de livraison complète pour que nous puissions préparer l'expédition ?\n\nMerci d'avance,\n\nMarc\nLa Boîte Artisanale"
+      "subject": "Your order — missing shipping address",
+      "body": "Hello {{customer_name}},\n\nWe have received your order for {{product}}.\n\nCould you please send us your full shipping address so we can prepare the dispatch?\n\nThank you,\n\nMarc\nLa Boîte Artisanale"
     },
     {
       "id": "email-stock-alert",
-      "subject": "[ALERTE] Rupture stock — commande de {{nom_client}}",
-      "body_fr": "Alerte rupture de stock.\n\nClient : {{nom_client}} ({{email_client}})\nProduit : {{produit}}\nQuantité demandée : {{quantite}}\nStock disponible : {{stock_disponible}}\n\nAction requise : contacter le client pour proposer un délai ou un remboursement.\n\n— Workflow La Boîte Artisanale"
+      "subject": "[ALERT] Out of stock — order from {{customer_name}}",
+      "body": "Out-of-stock alert.\n\nCustomer: {{customer_name}} ({{customer_email}})\nProduct: {{product}}\nQuantity requested: {{quantity}}\nStock available: {{stock_available}}\n\nAction required: contact the customer to offer a delay or a refund.\n\n— La Boîte Artisanale Workflow"
     }
   ],
 
   "error_handling": [
     {
-      "scenario": "Email de commande non parseable (format trop inhabituel)",
-      "action": "Envoyer une notification à Marc avec le mail original en pièce jointe. Statut Google Sheets = 'À traiter manuellement'."
+      "scenario": "Order email not parseable (unusually formatted)",
+      "action": "Send a notification to Marc with the original email attached. Google Sheets status = 'Manual review'."
     },
     {
-      "scenario": "Feuille Google Sheets inaccessible",
-      "action": "Arrêter le workflow. Envoyer une alerte à Marc. Ne pas envoyer de confirmation au client."
+      "scenario": "Google Sheets inaccessible",
+      "action": "Stop the workflow. Send an alert to Marc. Do not send a confirmation to the customer."
     },
     {
-      "scenario": "Produit non trouvé dans l'onglet Stocks",
-      "action": "Traiter comme rupture (S04b) — alerte à Marc et Julien."
+      "scenario": "Product not found in the Stock tab",
+      "action": "Treat as out of stock (S04b) — alert Marc and Julien."
     }
   ],
 
@@ -165,14 +165,14 @@
     "enterprise_deployment_required": false,
     "node_mapping_incomplete": false,
     "human_checkpoint_required": true,
-    "human_checkpoint_details": "Ruptures de stock et emails non parsables nécessitent une action manuelle de Marc",
+    "human_checkpoint_details": "Out-of-stock situations and unparseable emails require manual action from Marc",
     "extraction_reliability_risk": true,
-    "extraction_risk_note": "La fiabilité de l'extraction dépend du format réel des emails. Tester sur 20 vrais emails avant la mise en production."
+    "extraction_risk_note": "Extraction reliability depends on the actual format of incoming emails. Test on 20 real emails before going live."
   },
 
   "deployment": {
     "recommended_builder": "n8n",
-    "deployment_model": "n8n Cloud (plan Starter ~20€/mois) OU self-hosted sur VPS OVH (~5€/mois + gestion Romain)",
+    "deployment_model": "n8n Cloud (Starter plan ~€20/month) OR self-hosted on OVH VPS (~€5/month + Romain's management)",
     "deployer": "Romain (freelance)",
     "estimated_setup_hours": 5,
     "estimated_setup_cost_eur": 300,
@@ -180,6 +180,6 @@
       { "service": "Gmail", "type": "OAuth2", "scope": "gmail.readonly + gmail.send" },
       { "service": "Google Sheets", "type": "OAuth2", "scope": "spreadsheets" }
     ],
-    "maintenance": "Marc peut modifier les templates email depuis l'interface n8n sans toucher au code. Les modifications de logique (nouveaux produits, nouvelles règles) nécessitent Romain."
+    "maintenance": "Marc can edit email templates from the n8n interface without touching code. Logic changes (new products, new rules) require Romain."
   }
 }
