@@ -1,6 +1,6 @@
 # PROJECT.md — Talk2Flow
 > Internal working document. Tracks decisions, roadmap, and session journal.
-> Last update: Session 8 — full pipeline end-to-end, GitHub publication, Claude plugin entry point
+> Last update: Session 10 — V1 beta published on GitHub, pme-order-management translated to English, hr-admin-rh demo retired
 
 ---
 
@@ -64,16 +64,17 @@ Validated technically Session 4 with bpmn-js in a Claude artifact via unpkg CDN.
 | Skill | Status | Notes |
 |---|---|---|
 | `interview-guide` | ✅ Delivered EN (Session 8) | Mode 1 (fresh interview) + Mode 2 (transcript review with gap detection) |
-| `process-extractor` | ✅ Ported to EN (Session 7) | Tested on Sophie Marchand HR scenario (Session 8) |
-| `process-modeler` | ✅ Ported to EN + dual viz (Session 7) | Tested on Sophie Marchand HR scenario (Session 8) |
-| `process-challenger` | ✅ Ported to EN (Session 7) | Tested on Sophie Marchand HR scenario (Session 8) — 11 processes, 6 opportunities |
-| `stack-profiler` | ✅ Delivered EN (Session 3) | Tested with hypothetical Sophie profile (Session 8) |
-| `automation-architect` | ✅ Delivered EN (Session 8) | Tested on OPP08 (self-service Lucca) — two approaches, full spec |
+| `process-extractor` | ✅ Ported to EN (Session 7) | Validated against the pme-order-management transcript |
+| `process-modeler` | ✅ Ported to EN + dual viz (Session 7) | Validated against the pme-order-management transcript |
+| `process-challenger` | ✅ Ported to EN (Session 7) | Validated on the pme-order-management transcript — 5 processes, 4 opportunities |
+| `stack-profiler` | ✅ Delivered EN (Session 3) | Tested on the pme-order-management scenario |
+| `automation-architect` | ✅ Delivered EN (Session 8) | Tested on OPP01+OPP02+OPP04 (pme-order-management) — full spec produced |
+| `n8n-builder` | ✅ Implemented (Session 9) | 12-node workflow generated for the pme-order-management spec |
 
-### 🔄 Implemented — end-to-end test pending
-| Skill | Status | Notes |
+### 📦 Flagship demo
+| Demo | Status | Notes |
 |---|---|---|
-| `n8n-builder` | ✅ Implemented (Session 9) | Trigger mapping, node catalog, workflow JSON schema, dual-audience docs. Not yet tested on a live scenario. |
+| `pme-order-management` | ✅ Reference quality (Session 10) | All artifacts present, translated to English |
 
 ### 🔧 Shared templates
 | Template | Status |
@@ -92,22 +93,22 @@ Validated technically Session 4 with bpmn-js in a Claude artifact via unpkg CDN.
 
 | # | Action | Status |
 |---|---|---|
-| 1 | Reserve `github.com/talk2flow` org | 🔲 This week |
-| 2 | Reserve `talk2flow.dev` or `.io` domain | 🔲 This week |
-| 3 | Reserve `talk2flow` on PyPI (placeholder) | 🔲 Before V1 |
-| 4 | Reserve `@talk2flow` handles on X / LinkedIn | 🔲 Before launch |
+| 1 | Reserve a GitHub repo for Talk2Flow | ✅ Done — `github.com/lumio18/talk2flow` |
+| 2 | Reserve `talk2flow.dev` or `.io` domain | 🔲 Optional, post-launch |
+| 3 | Reserve `talk2flow` on PyPI (placeholder) | 🔲 If/when a Python SDK lands |
+| 4 | Reserve `@talk2flow` handles on X / LinkedIn | 🔲 Before broader launch |
 | 5 | Translate process-extractor to EN | ✅ Done Session 7 |
 | 6 | Translate process-modeler to EN | ✅ Done Session 7 |
 | 7 | Translate process-challenger to EN | ✅ Done Session 7 |
 | 8 | Build `automation-architect` | ✅ Done Session 8 |
 | 9 | Build `interview-guide` (Mode 1 + Mode 2 with gap detection) | ✅ Done Session 8 |
 | 10 | Write root `SKILL.md` as Claude plugin entry point | ✅ Done Session 8 |
-| 11 | Create Sophie Marchand HR demo (hr-admin-rh) | ✅ Done Session 8 |
-| 12 | Finalize `templates/bpmn-viewer.html` | 🔲 Before launch |
-| 13 | Refactor process-modeler to produce HTML artifact | 🔲 Before launch |
+| 11 | Build the V1 flagship demo (pme-order-management) | ✅ Done Session 10 |
+| 12 | Finalize `templates/bpmn-viewer.html` | 🔲 Before broader launch |
+| 13 | Refactor process-modeler to produce HTML artifact | 🔲 Before broader launch |
 | 14 | Verify current process-modeler outputs OMG-compliant BPMN | 🔲 Blocking refactor |
-| 15 | Reserve `github.com/talk2flow` org | 🔲 This week |
-| 16 | Reserve `talk2flow.dev` or `.io` domain | 🔲 This week |
+| 15 | Publish v1.0.0-beta release on GitHub | ✅ Done Session 10 |
+| 16 | Translate flagship demo to English | ✅ Done Session 10 |
 
 ---
 
@@ -116,23 +117,23 @@ Validated technically Session 4 with bpmn-js in a Claude artifact via unpkg CDN.
 | # | Question | Priority |
 |---|---|---|
 | 1 | Current BPMN format from process-modeler (OMG standard or custom) | 🟠 Blocks bpmn-viewer finalization |
-| 2 | PME order management demo: transcript still to write | 🟠 Blocks flagship demo |
-| 3 | Target V1 launch date | 🟡 Frames scope |
-| 4 | n8n-builder: scope for V1 (simple linear workflows only, or full branching?) | 🟡 Before implementation |
+| 2 | Target broader launch date (beyond GitHub beta) | 🟡 Frames scope |
+| 3 | Second demo scenario: which industry / which platform builder to showcase? | 🟡 Post-V1 |
+| 4 | Set up CI to validate JSON artifacts against the documented schemas | 🟡 Quality safeguard |
 
 ---
 
 ## Recommended next step
 
-The pipeline is end-to-end functional (interview-guide → automation-architect). Three natural next steps:
+V1 beta is live. Three natural next steps in priority order:
 
-**Path A — Complete the PME flagship demo**: write the founder transcript, run the full pipeline, add all artifacts to `demos/pme-order-management/`. This is the social-shareable demo that makes the repo credible.
+**Path A — Run the flagship pipeline live**: pick one Claude.ai user (the operator), run the full pipeline against the pme-order-management transcript, capture any divergences from the canonical artifacts, fix the skills. This is the dogfooding pass.
 
-**Path B — Implement n8n-builder**: the last V1 missing piece. Takes an automation-architect spec and produces an importable n8n workflow JSON.
+**Path B — Second demo on a different builder**: prototype `make-builder` or `python-builder` to validate the plugin architecture from the architect down. A second demo with a different stack would prove portability.
 
-**Path C — GitHub publication**: create the org, push the repo, set up the README for discoverability (badges, GIF, one-click Claude install).
+**Path C — Discoverability**: domain reservation, social handles, a short demo video / GIF in the README.
 
-My recommendation: **Path A**, then **Path C**. The PME demo is the argument; the GitHub repo is the vehicle. n8n-builder (Path B) can follow post-launch.
+My recommendation: **Path A**. The repo is published — what matters next is that someone outside the build team can run the pipeline end-to-end without hand-holding.
 
 ---
 
@@ -147,4 +148,6 @@ My recommendation: **Path A**, then **Path C**. The PME demo is the argument; th
 | 5 | License MIT locked + full repository scaffold created (skills, templates, demos, docs, .github) |
 | 6 | Builder plugin architecture locked — automation-architect produces universal agnostic spec, builders are interchangeable plugins |
 | 7 | Three FR skills ported to EN with Talk2Flow conventions: process-extractor, process-modeler (+ bpmn-js artifact integration), process-challenger. JSON keys in English snake_case, free-text fields adapt to transcript language. |
-| 8 | Full end-to-end pipeline run on Sophie Marchand HR scenario (11 processes, 6 quick-win opportunities, automation spec on OPP08). `automation-architect` delivered. `interview-guide` implemented (Mode 1 + Mode 2 with 6-type gap detection). Root `SKILL.md` rewritten as Claude plugin orchestrator with transcript intake + complementary questions feature. `hr-admin-rh` demo created. Workspace cleaned for GitHub publication. |
+| 8 | Full end-to-end pipeline run on a first HR scenario. `automation-architect` delivered. `interview-guide` implemented (Mode 1 + Mode 2 with 6-type gap detection). Root `SKILL.md` rewritten as Claude plugin orchestrator with transcript intake + complementary questions feature. First demo (hr-admin-rh) created. Workspace cleaned for GitHub publication. |
+| 9 | `n8n-builder` implemented — trigger mapping, node catalog, workflow JSON schema, dual-audience docs. pme-order-management pipeline run completed end-to-end producing the 12-node n8n workflow. |
+| 10 | V1 beta published on GitHub at `lumio18/talk2flow`. Flagship demo retired down to pme-order-management only and translated to English (transcript, gap-questions, all JSON artifacts, n8n workflow, end-user and deployer docs). README pipeline + roadmap diagrams rewritten in Mermaid. Author identity cleaned (single contributor `lumio18`, no Claude co-author). hr-admin-rh demo retired. |

@@ -12,49 +12,25 @@ This document describes how Talk2Flow is structured, why each skill exists, and 
 
 ## The pipeline
 
-```
-[End user describes their day]
-       │
-       │ (free text or audio)
-       ▼
-┌──────────────────┐
-│ interview-guide  │
-└──────────────────┘
-       │
-       │ structured transcript
-       ▼
-┌──────────────────────┐
-│ process-extractor    │
-└──────────────────────┘
-       │
-       │ process inventory (JSON)
-       ▼
-┌────────────────────────────────────┐
-│ process-modeler   process-challenger│
-│ (visualization)   (opportunities)   │
-└────────────────────────────────────┘
-       │
-       │ prioritized opportunities (JSON)
-       ▼
-┌──────────────────┐
-│ stack-profiler   │
-└──────────────────┘
-       │
-       │ stack profile + deployment context (JSON)
-       ▼
-┌────────────────────────┐
-│ automation-architect   │
-└────────────────────────┘
-       │
-       │ technical spec (JSON + markdown)
-       ▼
-┌──────────────────┐
-│ n8n-builder      │
-└──────────────────┘
-       │
-       │ importable workflow + deployer doc
-       ▼
-[Deployer ships it]
+```mermaid
+flowchart TD
+    Input([End user describes their day])
+    Output([Deployer ships the workflow])
+
+    Input -->|free text or audio| A[<b>interview-guide</b>]
+    A -->|structured transcript| B[<b>process-extractor</b>]
+    B -->|process inventory JSON| C[<b>process-modeler</b><br/><i>visualization</i>]
+    B -->|process inventory JSON| D[<b>process-challenger</b><br/><i>opportunities</i>]
+    C -->|BPMN · Mermaid · SIPOC · RACI| E[<b>stack-profiler</b>]
+    D -->|prioritized opportunities| E
+    E -->|stack profile + deployment context| F[<b>automation-architect</b>]
+    F -->|universal spec — JSON + markdown| G[<b>n8n-builder</b>]
+    G -->|importable workflow + deployer doc| Output
+
+    classDef io fill:#e8f4ff,stroke:#0366d6,stroke-width:2px,color:#000
+    classDef skill fill:#ffffff,stroke:#586069,color:#000
+    class Input,Output io
+    class A,B,C,D,E,F,G skill
 ```
 
 ## Why this order

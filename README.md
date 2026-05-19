@@ -28,22 +28,25 @@ The last technical mile still needs a human. Talk2Flow makes that mile short.
 
 ## How it works
 
-```
-[End user describes their day — transcript or live interview]
-      │
-      ▼
-┌─────────────────────────────────────────────────────┐
-│ interview-guide     gap detection + follow-up Q&A   │
-│ process-extractor   process inventory (JSON)         │
-│ process-modeler     BPMN, Mermaid, SIPOC, RACI       │
-│ process-challenger  opportunities matrix + ROI       │
-│ stack-profiler      tools, budget, deployment ctx    │
-│ automation-architect  technical spec (WHAT)          │
-│ n8n-builder         importable workflow (HOW)        │
-└─────────────────────────────────────────────────────┘
-      │
-      ▼
-[Deployer ships it. End user uses it.]
+```mermaid
+flowchart TD
+    Input([Transcript or live interview])
+    Output([Deployer ships the workflow])
+
+    Input --> A[<b>interview-guide</b><br/>Gap detection + complementary Q&A]
+    A -->|enriched transcript| B[<b>process-extractor</b><br/>Process inventory JSON]
+    B -->|inventory| C[<b>process-modeler</b><br/>BPMN · Mermaid · SIPOC · RACI]
+    B -->|inventory| D[<b>process-challenger</b><br/>Opportunity matrix · ROI]
+    C -->|diagrams + RACI| E[<b>stack-profiler</b><br/>Tools · budget · compliance]
+    D -->|prioritized opportunities| E
+    E -->|stack profile| F[<b>automation-architect</b><br/>Universal spec — WHAT]
+    F -->|spec| G[<b>n8n-builder</b><br/>Importable workflow — HOW]
+    G --> Output
+
+    classDef io fill:#e8f4ff,stroke:#0366d6,stroke-width:2px,color:#000
+    classDef skill fill:#ffffff,stroke:#586069,color:#000
+    class Input,Output io
+    class A,B,C,D,E,F,G skill
 ```
 
 Every skill is a Claude skill — a structured prompt with a clear contract, runnable in Claude.ai today. The pipeline can be run end-to-end or one stage at a time.
@@ -100,13 +103,22 @@ The framework adapts based on who is operating it. See [docs/roles-and-vocabular
 
 ### 🔜 Roadmap
 
-```
-automation-architect
-        │  universal spec
-        ▼
-n8n-builder (V1) · make-builder · zapier-builder
-power-automate-builder · python-builder
-[your-platform-builder] ← contribute yours
+```mermaid
+flowchart LR
+    A[<b>automation-architect</b><br/>universal spec]
+    A ==> B[<b>n8n-builder</b><br/>V1 ✓]
+    A -.-> C[make-builder]
+    A -.-> D[zapier-builder]
+    A -.-> E[power-automate-builder]
+    A -.-> F[python-builder]
+    A -.-> G[your-builder<br/><i>contribute</i>]
+
+    classDef done fill:#dcffe4,stroke:#28a745,stroke-width:2px,color:#000
+    classDef root fill:#e8f4ff,stroke:#0366d6,stroke-width:2px,color:#000
+    classDef planned fill:#ffffff,stroke:#586069,stroke-dasharray:4 4,color:#000
+    class A root
+    class B done
+    class C,D,E,F,G planned
 ```
 
 No forced migrations: if the end user already has Zapier, they get Zapier output.
@@ -133,7 +145,7 @@ No forced migrations: if the end user already has Zapier, they get Zapier output
 
 ```bash
 # Clone the repo
-git clone https://github.com/[your-org]/talk2flow.git
+git clone https://github.com/lumio18/talk2flow.git
 cd talk2flow
 
 # Add as a Claude Code command
@@ -167,7 +179,7 @@ See [docs/mcp-integrations.md](docs/mcp-integrations.md) for setup instructions 
 
 ```
 talk2flow/
-├── skills/              one folder per skill (SKILL.md + references/)
+├── skills/                    one folder per skill (SKILL.md + references/)
 │   ├── interview-guide/
 │   ├── process-extractor/
 │   ├── process-modeler/
@@ -175,27 +187,23 @@ talk2flow/
 │   ├── stack-profiler/
 │   ├── automation-architect/
 │   └── n8n-builder/
-├── templates/           reusable HTML/Markdown templates (BPMN viewer, etc.)
-├── demos/               end-to-end scenarios with all artifacts
-│   ├── pme-order-management/    (scaffold — in progress)
-│   └── hr-admin-rh/             (Sophie scenario — reference quality)
-├── docs/                architecture, conventions, vocabulary
-├── SKILL.md             root skill — Talk2Flow entry point for Claude projects
-├── README.md            this file
-├── PROJECT.md           internal working document (decisions, session journal)
-├── CONTRIBUTING.md      how to help
-└── LICENSE              MIT
+├── templates/                 reusable HTML/Markdown templates (BPMN viewer, etc.)
+├── demos/                     end-to-end scenarios with all artifacts
+│   └── pme-order-management/  reference-quality V1 flagship
+├── docs/                      architecture · conventions · vocabulary
+├── SKILL.md                   root skill — Talk2Flow entry point for Claude projects
+├── README.md                  this file
+├── PROJECT.md                 internal working document (decisions, session journal)
+├── CONTRIBUTING.md            how to help
+└── LICENSE                    MIT
 ```
 
 ---
 
 ## Demo scenarios
 
-### HR Administration (Sophie scenario)
-Located in `demos/hr-admin-rh/`. A complete run of the full pipeline on an HR administrator's day-in-the-life interview, including gap detection, opportunity matrix, and automation spec. Reference quality — all artifacts present.
-
-### PME Order Management (in progress)
-Located in `demos/pme-order-management/`. A small e-commerce business automating email order processing. Exercises all six pipeline phases.
+### PME Order Management — reference quality
+Located in `demos/pme-order-management/`. A complete run of the full pipeline on a small artisanal e-commerce founder automating email order processing. All artifacts present: transcript, gap-question round, process inventory, opportunity matrix with ROI, stack profile, universal automation spec, importable n8n workflow, end-user guide, and deployer handoff.
 
 ---
 

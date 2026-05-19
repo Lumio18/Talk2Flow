@@ -11,7 +11,7 @@ Demos serve two audiences:
 
 | Demo | Status | Scenario |
 |---|---|---|
-| `pme-order-management/` | 🔨 V1 flagship, scaffold only | Small e-commerce founder automates order processing |
+| `pme-order-management/` | ✅ Reference quality — V1 flagship | Small artisanal e-commerce founder automating email order processing |
 
 ## Adding a demo
 
