@@ -7,6 +7,10 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- **Claude Code plugin distribution** — `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` so the framework installs in one line via `/plugin marketplace add lumio18/talk2flow` + `/plugin install talk2flow@talk2flow`
+- README install section restructured with four options: Claude.ai Project (consultants), Claude Code plugin (developers), manual clone, individual skills
+
 ### Changed
 - Translated the `pme-order-management` demo to English (transcript, gap questions, all JSON artifacts, n8n workflow, end-user and deployer docs)
 - Harmonised README pipeline and roadmap diagrams using Mermaid for clearer rendering on GitHub

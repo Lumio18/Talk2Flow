@@ -1,0 +1,35 @@
+{
+  "name": "talk2flow",
+  "owner": {
+    "name": "lumio18",
+    "email": "elie.benhamou.pro@gmail.com"
+  },
+  "metadata": {
+    "description": "Talk2Flow — turn talk into deployable workflows",
+    "version": "1.0.0-beta"
+  },
+  "plugins": [
+    {
+      "name": "talk2flow",
+      "source": "./",
+      "description": "Full BPM pipeline: transcript → gap detection → process inventory → BPMN/SIPOC/RACI → opportunity matrix with ROI → stack profile → universal automation spec → importable n8n workflow with end-user and deployer documentation.",
+      "version": "1.0.0-beta",
+      "author": {
+        "name": "lumio18"
+      },
+      "homepage": "https://github.com/lumio18/talk2flow",
+      "repository": "https://github.com/lumio18/talk2flow",
+      "license": "MIT",
+      "keywords": [
+        "bpm",
+        "business-process-management",
+        "automation",
+        "n8n",
+        "workflow",
+        "process-mining",
+        "interview-to-spec"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

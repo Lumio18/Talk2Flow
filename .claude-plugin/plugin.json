@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "talk2flow",
+  "version": "1.0.0-beta",
+  "description": "Turn a meeting transcript into a deployable n8n automation spec — a 7-skill pipeline covering gap detection, process inventory, opportunity matrix, stack profiling, universal automation spec, and importable n8n workflow.",
+  "author": {
+    "name": "lumio18",
+    "url": "https://github.com/lumio18"
+  },
+  "repository": "https://github.com/lumio18/talk2flow",
+  "license": "MIT"
+}

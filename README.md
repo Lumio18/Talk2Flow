@@ -134,27 +134,34 @@ No forced migrations: if the end user already has Zapier, they get Zapier output
 
 ## Getting started
 
-### Option 1 — Claude.ai Project (recommended)
+### Option 1 — Claude.ai Project (recommended for consultants & non-developers)
 
 1. Open [Claude.ai](https://claude.ai) → **Projects** → **New Project**
 2. In Project Settings → **Project instructions**, paste the content of `SKILL.md` (root of this repo)
 3. Optionally add individual `skills/*/SKILL.md` files as project knowledge files for deeper reference
 4. Start a conversation: paste a transcript, or say "guide me through an interview"
 
-### Option 2 — Claude Code (CLI)
+### Option 2 — Claude Code plugin (recommended for developers)
 
-```bash
-# Clone the repo
-git clone https://github.com/lumio18/talk2flow.git
-cd talk2flow
+One-line install via the Claude Code plugin marketplace:
 
-# Add as a Claude Code command
-cp SKILL.md .claude/commands/talk2flow.md
+```
+/plugin marketplace add lumio18/talk2flow
+/plugin install talk2flow@talk2flow
 ```
 
-Then invoke with `/talk2flow` in your Claude Code session.
+The seven skills auto-load and route based on what you paste or describe. Updates flow through the marketplace.
 
-### Option 3 — Individual skills
+### Option 3 — Claude Code (manual clone)
+
+```bash
+git clone https://github.com/lumio18/talk2flow.git
+cd talk2flow
+```
+
+Then either point Claude Code at the directory or copy `SKILL.md` into your own `.claude/commands/` folder.
+
+### Option 4 — Individual skills
 
 Each `skills/<skill-name>/SKILL.md` file is self-contained. Copy any skill's content into a Claude project's instructions to run that stage independently.
 
